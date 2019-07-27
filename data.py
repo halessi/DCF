@@ -23,6 +23,7 @@ def get_jsonparsed_data(url):
     return json.loads(data)
 
 
+#! TODO: maybe combine these with argument flag for which statement, seems pretty redundant tbh
 def get_income_statement(ticker, period = 'annual'):
     '''
     Fetch income statement.
@@ -30,20 +31,63 @@ def get_income_statement(ticker, period = 'annual'):
     args:
         ticker: company ticker.
         period: annual default, can fetch quarterly if specified. 
-s
+
     returns:
         parsed company's income statement
     '''
-    if ticker == 'annual':
+    if period == 'annual':
         url = 'https://financialmodelingprep.com/api/v3/financials/income-statement/{}'.format(ticker)
-    else:
+    elif period == 'quarter':
         url = 'https://financialmodelingprep.com/api/v3/financials/income-statement/{}?period=quarter'(ticker)
+    else:
+        raise ValueError("in get_income_statement: invalid period")     # may as well throw...
+
     return get_jsonparsed_data(url)
 
+
+def get_cashflow_statement(ticker, period = 'annual'):
+    '''
+    Fetch cashflow statement.
+
+    args:
+        ticker: company ticker.
+        period: annual default, can fetch quarterly if specified. 
+
+    returns:
+        parsed company's cashflow statement
+    '''
+    if period == 'annual':
+        url = 'https://financialmodelingprep.com/api/v3/financials/cash-flow-statement/{}'.format(ticker)
+    elif period == 'quarter':
+        url = 'https://financialmodelingprep.com/api/v3/financials/cash-flow-statement/{}?period=quarter'(ticker)
+    else:
+        raise ValueError("in get_cashflow_statement: invalid period")     # may as well throw...
+
+    return get_jsonparsed_data(url)
+
+def get_balancesheet_statement(ticker, period = 'annual'):
+    '''
+    Fetch balance sheet statement.
+
+    args:
+        ticker: company ticker.
+        period: annual default, can fetch quarterly if specified. 
+
+    returns:
+        parsed company's balance sheet statement
+    '''
+    if period == 'annual':
+        url = 'https://financialmodelingprep.com/api/v3/financials/balance-sheet-statement/{}'.format(ticker)
+    elif period == 'quarter':
+        url = 'https://financialmodelingprep.com/api/v3/financials/balance-sheet-statement/{}?period=quarter'(ticker)
+    else:
+        raise ValueError("in get_balancesheet_statement: invalid period")     # may as well throw...
+
+    return get_jsonparsed_data(url)
 
 if __name__ == '__main__':
     ''' quick test, to use run data.py directly '''
 
-    url = "https://financialmodelingprep.com/api/company/profile/AAPL?datatype=json"
-    data = get_jsonparsed_data(url)
+    ticker = 'AAPL'
+    data = get_cashflow_statement(ticker)
     print(data)
