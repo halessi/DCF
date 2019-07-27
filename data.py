@@ -65,7 +65,7 @@ def get_cashflow_statement(ticker, period = 'annual'):
 
     return get_jsonparsed_data(url)
 
-def get_balancesheet_statement(ticker, period = 'annual'):
+def get_balance_statement(ticker, period = 'annual'):
     '''
     Fetch balance sheet statement.
 

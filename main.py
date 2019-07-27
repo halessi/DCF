@@ -18,8 +18,27 @@ def ulFCF(ebit, tax_rate, non_cash_charges, cwc, cap_ex):
     '''
     return ebit * (1-tax_rate) + non_cash_charges + cwc - cap_ex
 
+
 def forecast_flows(ticker, period, growth_rate):
-    cashflow_statement 
+    '''
+    Forecast free cash flows _period_ years into future.
+
+    args:
+        ticker: company for forecasting
+        period: years into the future
+        growth rate: assumed growth rate in revenue YoY ! important
+
+    returns:
+        sum of present values of flows, discounted by WACC
+    '''
+
+    # store only most recent
+    income_statement = get_income_statement(ticker = ticker)['financials'][0]
+    balance_statement = get_balance_statement(ticker = ticker)['financials'][0]
+    cashflow_statement = get_cashflow_statement(ticker = ticker)['financials'][0]
+
+    ebit = income_statement['EBIT']
+    non_cash_charges = cashflow_statement['Depreciation & Amortization']
 
 
 def main(args):
