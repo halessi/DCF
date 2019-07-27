@@ -31,9 +31,10 @@ def get_discount_rate():
     '''
     return .1 # TODO: implement 
 
-def forecast_flows(ticker, period, earnings_growth_rate, cap_ex_growth_rate):
+def enterprise_value(ticker, period, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate):
     '''
-    Forecast free cash flows _period_ years into future.
+    Calculate enterprise value by NPV of explicit _period_ free cash flows + NPV of terminal value,
+    both discounted by W.A.C.C.
 
     args:
         ticker: company for forecasting
@@ -41,7 +42,7 @@ def forecast_flows(ticker, period, earnings_growth_rate, cap_ex_growth_rate):
         growth rate: assumed growth rate in revenue, nwc, non-cash-charges YoY
 
     returns:
-        sum of present values of flows, discounted by WACC
+        enterprise value
     '''
     income_statement = get_income_statement(ticker = ticker)['financials']
     balance_statement = get_balance_statement(ticker = ticker)['financials']
@@ -59,7 +60,7 @@ def forecast_flows(ticker, period, earnings_growth_rate, cap_ex_growth_rate):
 
     flows = []
 
-    # Now let's iterate through years, starting with most recent year
+    # Now let's iterate through years to calculate FCF, starting with most recent year
     print('\nForecasting flows for {} years out, starting with at date {} with earnings growth {}.'.format(period, income_statement[0]['date'], earnings_growth_rate))  
     print('         DFCF   |    EBIT   |    D&A    |    CWC    |   CAP_EX   | ')
     for yr in range(1, period+1):    
@@ -70,30 +71,42 @@ def forecast_flows(ticker, period, earnings_growth_rate, cap_ex_growth_rate):
         cwc = cwc * 0.9                             # TODO: evaluate this cwc rate? 0.1 annually?
         cap_ex = cap_ex * (1 + cap_ex_growth_rate)         
 
+        # discount by WACC
         flow = ulFCF(ebit, tax_rate, non_cash_charges, cwc, cap_ex)
-        discounted_flow = flow/(1 + discount)**yr
-        flows.append(discounted_flow)
+        PV_flow = flow/(1 + discount)**yr
+        flows.append(PV_flow)
 
         print(str(int(income_statement[0]['date'][0:4]) + yr) + '  ',
-              '%.2E' % Decimal(discounted_flow) + ' | ',
+              '%.2E' % Decimal(PV_flow) + ' | ',
               '%.2E' % Decimal(ebit) + ' | ',
               '%.2E' % Decimal(non_cash_charges) + ' | ',
               '%.2E' % Decimal(cwc) + ' | ',
               '%.2E' % Decimal(cap_ex) + ' | ')
 
-    return sum(flows) 
+    NPV_FCF = sum(flows)
+    print('\nSum of future flows for {}: {}.'.format(ticker, '%.2E' % Decimal(str(NPV_FCF))))
+    
+    # now calculate terminal value
+    final_cashflow = flows[-1] * (1 + perpetual_growth_rate)
+    TV = final_cashflow/(discount - perpetual_growth_rate)
+    NPV_TV = TV/(1+discount)**(1+period)
+    print('\nTerminal value for {} in {} years: {}.'.format(ticker, 1+period, '%.2E' % Decimal(str(NPV_TV))))
+
+    return NPV_TV+NPV_FCF
 
 
-def main(args):
+def DCF(args):
     '''
     a very basic 2-stage DCF implemented for learning purposes
     '''
     if args.ticker is not None:
-        sum_of_present_values = forecast_flows(args.ticker, args.period, args.earnings_growth_rate, args.cap_ex_growth_rate)
+        EV = enterprise_value(args.ticker, args.period, args.earnings_growth_rate, args.cap_ex_growth_rate, args.perpetual_growth_rate)
     else:
         raise ValueError('Must specify a ticker.')
 
-    print('\nSum of future flows for {}: {}.'.format(args.ticker, '%.2E' % Decimal(str(sum_of_present_values))))
+    print('\nEnterprise Value for {}: ${}.'.format(args.ticker, '%.2E' % Decimal(str(EV))))
+
+    # adjustments
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -102,6 +115,7 @@ if __name__ == '__main__':
     parser.add_argument('-t', '--ticker', help = 'ticker of company', type = str)
     parser.add_argument('-eg', '--earnings_growth_rate', help = 'growth in revenue, YoY',  type = float, default = .05)
     parser.add_argument('-cg', '--cap_ex_growth_rate', help = 'growth in cap_ex, YoY', type = float, default = 0.045)
+    parser.add_argument('-pgr', '--perpetual_growth_rate', help = 'for perpetuity growth terminal value', type = float, default = 0.05)
 
     args = parser.parse_args()
-    main(args)
+    DCF(args)
