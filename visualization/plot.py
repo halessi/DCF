@@ -3,7 +3,7 @@ Quick visualization toolkit. I'd like to build this out to be decently powerful
 in terms of enaabling quick interpretation of DCF related data.
 '''
 
-import matplotlib.plt as plt
+import matplotlib.pyplot as plt
 
 def visualize(dcf_prices, current_share_prices, regress = True):
     '''
@@ -18,4 +18,5 @@ def visualize(dcf_prices, current_share_prices, regress = True):
     returns:
         nada
     '''
-    differences = []
+    print(dcf_prices)
+    print(current_share_prices)

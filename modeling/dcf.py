@@ -3,40 +3,70 @@ from decimal import Decimal
 
 from modeling.data import *
 
-def DCF(ticker, period, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate):
+def DCF(ticker, forecast, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate, year = 0):
     '''
     a very basic 2-stage DCF implemented for learning purposes.
-    see enterprise_value() for details on arguments
+    see enterprise_value() for details on arguments. 
 
-    returns
-        dict: {'share price': __, 'enterprise_value': __, 'equity_value': __}
+    args:
+        year: if 0, returns the most recent DCF valuation available. works in years-back, e.g. year = 1 would give (most recent - 1) DCF
+
+    returns:
+        CURRENT DCF VALUATION. See historical_dcf to fetch a history. 
+        dict: {'share price': __, 'enterprise_value': __, 'equity_value': __, 'date': __}
 
     '''
     if ticker is not None:
-        enterprise_val = enterprise_value(ticker,
-                              period, 
-                              earnings_growth_rate, 
-                              cap_ex_growth_rate, 
-                              perpetual_growth_rate)
-    else:
-        raise ValueError('Must specify a ticker.')
+        income_statement = get_income_statement(ticker = ticker)['financials'][year:year+1] # pass year + 1 bc we need change in working capital
+        balance_statement = get_balance_statement(ticker = ticker)['financials'][year:year+1]
+        cashflow_statement = get_cashflow_statement(ticker = ticker)['financials'][year:year+1]
 
-    # adjustments
-    ev_statement = get_EV_statement(ticker)['enterpriseValues'][0]
-    equity_val = enterprise_val - ev_statement['+ Total Debt'] 
-    equity_val += ev_statement['- Cash & Cash Equivalents']
-    share_price = equity_val/float(ev_statement['Number of Shares'])
+        enterprise_val = enterprise_value(income_statement,
+                                          cashflow_statement,
+                                          balance_statement,
+                                          forecast, 
+                                          earnings_growth_rate, 
+                                          cap_ex_growth_rate, 
+                                          perpetual_growth_rate)
+    else:
+        raise ValueError('Must specify a ticker.') 
+
+    enterprise_value_statement = get_EV_statement(ticker)['enterpriseValues'][0]
+    equity_val, share_price = equity_value(enterprise_val,
+                                       enterprise_value_statement)
 
     print('\nEnterprise Value for {}: ${}.'.format(ticker, '%.2E' % Decimal(str(enterprise_val))), 
               '\nEquity Value for {}: ${}.'.format(ticker, '%.2E' % Decimal(str(equity_val))),
-           '\nPer share value for {}: ${}.'.format(ticker, '%.2E' % Decimal(str(share_price))))
-    print('-'*60)
+           '\nPer share value for {}: ${}.\n'.format(ticker, '%.2E' % Decimal(str(share_price))),
+            '-'*60)
 
     return {
+        'date': income_statement['date'],       # statement date used
         'enterprise_value': enterprise_val,
         'equity_value': equity_val,
         'share_price': share_price
     }
+
+def historical_DCF(ticker, period, forecast, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate):
+    '''
+    Wrap DCF to fetch DCF values over a historical timeframe, denoted period. 
+
+    args:
+        same as DCF, except for
+        period: number of years to fetch DCF for
+
+    returns:
+        {'date': dcf, ..., 'date', dcf}
+    '''
+    dcfs = {}
+    for year in range(0, period):
+        try:
+            dcf = DCF(ticker, forecast, earnings_growth_rate,  cap_ex_growth_rate, perpetual_growth_rate)
+        except AttributeError:
+            print('Year {} unavailable, no historical statement.'.format(year)) # catch
+        dcfs[dcf['date'][0:4]] = dcf 
+    
+    return dcfs
 
 def ulFCF(ebit, tax_rate, non_cash_charges, cwc, cap_ex):
     '''
@@ -47,7 +77,7 @@ def ulFCF(ebit, tax_rate, non_cash_charges, cwc, cap_ex):
         tax_rate: The tax rate a firm is expected to pay. Usually a company's historical effective rate.
         non_cash_charges: Depreciation and amortization costs. 
         cwc: Annual change in net working capital.
-        cap_ex: capital expenditures, or what is spent to maintain growth rate.
+        cap_ex: capital expenditures, or what is spent to maintain zgrowth rate.
 
     returns:
         unlevered free cash flow
@@ -66,7 +96,25 @@ def get_discount_rate():
     '''
     return .1 # TODO: implement 
 
-def enterprise_value(ticker, period, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate):
+def equity_value(enterprise_value, enterprise_value_statement):
+    '''
+    Given an enterprise value, return the equity value by adjusting for cash/cash equivs. and total debt.
+
+    args:
+        enterprise_value: (EV = market cap + total debt - cash), or total value
+        enterprise_value_statement: information on debt & cash
+    
+    returns:
+        equity_value: (enterprise value - debt + cash)
+        share_price: equity value/shares outstanding
+    '''
+    equity_val = enterprise_value - enterprise_value_statement['+ Total Debt'] 
+    equity_val += enterprise_value_statement['- Cash & Cash Equivalents']
+    share_price = equity_val/float(enterprise_value_statement['Number of Shares'])
+
+    return equity_val,  share_price
+
+def enterprise_value(income_statement, cashflow_statement, balance_statement, period, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate):
     '''
     Calculate enterprise value by NPV of explicit _period_ free cash flows + NPV of terminal value,
     both discounted by W.A.C.C.
@@ -81,10 +129,6 @@ def enterprise_value(ticker, period, earnings_growth_rate, cap_ex_growth_rate, p
     returns:
         enterprise value
     '''
-    income_statement = get_income_statement(ticker = ticker)['financials']
-    balance_statement = get_balance_statement(ticker = ticker)['financials']
-    cashflow_statement = get_cashflow_statement(ticker = ticker)['financials']
-
     # XXX: statements are returned as historical list, 0 most recent
     ebit = float(income_statement[0]['EBIT'])
     tax_rate = float(income_statement[0]['Income Tax Expense']) /  \
@@ -121,13 +165,11 @@ def enterprise_value(ticker, period, earnings_growth_rate, cap_ex_growth_rate, p
               '%.2E' % Decimal(cap_ex) + ' | ')
 
     NPV_FCF = sum(flows)
-    print('\nSum of future flows for {}: {}.'.format(ticker, '%.2E' % Decimal(str(NPV_FCF))))
     
     # now calculate terminal value
     final_cashflow = flows[-1] * (1 + perpetual_growth_rate)
     TV = final_cashflow/(discount - perpetual_growth_rate)
     NPV_TV = TV/(1+discount)**(1+period)
-    print('Terminal value for {} in {} years: {}.'.format(ticker, 1+period, '%.2E' % Decimal(str(NPV_TV))))
 
     return NPV_TV+NPV_FCF
 

@@ -121,7 +121,7 @@ def get_batch_stock_prices(tickers):
     '''
     prices = {}
     for ticker in tickers:
-        prices['ticker'] = get_stock_price(ticker)['price']
+        prices[ticker] = get_stock_price(ticker)['price']
 
     return prices
 
