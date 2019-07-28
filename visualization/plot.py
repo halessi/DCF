@@ -5,6 +5,7 @@ in terms of enabling quick interpretation of DCF related data.
 
 import matplotlib.pyplot as plt
 
+
 def visualize(dcf_prices, current_share_prices, regress = True):
     '''
     2d plot comparing dcf-forecasted per share price with
@@ -20,6 +21,19 @@ def visualize(dcf_prices, current_share_prices, regress = True):
     '''
     # TODO: implement
     return NotImplementedError
+
+def visualize_bulk_historicals(dcfs, condition):
+    '''
+    multiple 2d plot comparing historical DCFS of different growth
+    assumption conditions
+    '''
+    dcf_share_prices = {}
+    
+    for condition in condition.values():
+        for year in dcfs[condition].keys():
+            
+
+    xs = list(dcf_share_prices.keys())[::-1]
 
 def visualize_historicals(dcfs):
     '''

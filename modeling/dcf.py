@@ -3,7 +3,7 @@ from decimal import Decimal
 
 from modeling.data import *
 
-def DCF(ticker, forecast, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate, year = 0):
+def DCF(ticker, income_statement, balance_statement, cashflow_statement, forecast, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate, year = 0):
     '''
     a very basic 2-stage DCF implemented for learning purposes.
     see enterprise_value() for details on arguments. 
@@ -16,20 +16,13 @@ def DCF(ticker, forecast, earnings_growth_rate, cap_ex_growth_rate, perpetual_gr
         CURRENT DCF VALUATION. See historical_dcf to fetch a history. 
 
     '''
-    if ticker is not None:
-        income_statement = get_income_statement(ticker = ticker)['financials'][year:year+2] # pass year + 1 bc we need change in working capital
-        balance_statement = get_balance_statement(ticker = ticker)['financials'][year:year+2]
-        cashflow_statement = get_cashflow_statement(ticker = ticker)['financials'][year:year+2]
-
-        enterprise_val = enterprise_value(income_statement,
-                                          cashflow_statement,
-                                          balance_statement,
-                                          forecast, 
-                                          earnings_growth_rate, 
-                                          cap_ex_growth_rate, 
-                                          perpetual_growth_rate)
-    else:
-        raise ValueError('Must specify a ticker.') 
+    enterprise_val = enterprise_value(income_statement,
+                                        cashflow_statement,
+                                        balance_statement,
+                                        forecast, 
+                                        earnings_growth_rate, 
+                                        cap_ex_growth_rate, 
+                                        perpetual_growth_rate)
 
     enterprise_value_statement = get_EV_statement(ticker)['enterpriseValues'][0]
     equity_val, share_price = equity_value(enterprise_val,
@@ -59,9 +52,22 @@ def historical_DCF(ticker, years, forecast, earnings_growth_rate, cap_ex_growth_
         {'date': dcf, ..., 'date', dcf}
     '''
     dcfs = {}
+
+    income_statement = get_income_statement(ticker = ticker)['financials'] 
+    balance_statement = get_balance_statement(ticker = ticker)['financials']
+    cashflow_statement = get_cashflow_statement(ticker = ticker)['financials']
+
     for year in range(0, years):
         try:
-            dcf = DCF(ticker, forecast, earnings_growth_rate,  cap_ex_growth_rate, perpetual_growth_rate, year = year)
+            dcf = DCF(ticker, 
+                      income_statement[year:year+2],        # pass year + 1 bc we need change in working capital
+                      balance_statement[year:year+2],
+                      cashflow_statement[year:year+2],
+                      forecast, 
+                      earnings_growth_rate,  
+                      cap_ex_growth_rate, 
+                      perpetual_growth_rate, 
+                      year = year)
         except IndexError:
             print('Year {} unavailable, no historical statement.'.format(year)) # catch
         dcfs[dcf['date'][0:4]] = dcf 

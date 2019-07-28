@@ -27,28 +27,34 @@ def main(args):
     '''
 
     dcfs = {}
-    if args.ts is not None:
-        '''list to forecast'''
-        if args.y > 1:
-            for ticker in args.ts:
-                dcfs[ticker] =  historical_DCF(args.t, args.y, args.p, args.eg, args.cg, args.pgr)
-        else:
-            for ticker in args.tss:
-                dcfs[ticker] = DCF(args.t, args.p, args.eg, args.cg, args.pgr)
-    elif args.t is not None:
-        ''' single ticker'''
-        if args.y > 1:
-            dcfs[args.t] = historical_DCF(args.t, args.y, args.p, args.eg, args.cg, args.pgr)
-        else:
-            dcfs[args.t] = DCF(args.t, args.p, args.eg, args.cg, args.pgr)
-    else:
-        raise ValueError('A ticker or list of tickers must be specified with --ticker or --tickers')
+    # if args.ts is not None:
+    #     '''list to forecast'''
+    #     if args.y > 1:
+    #         for ticker in args.ts:
+    #             dcfs[ticker] =  historical_DCF(args.t, args.y, args.p, args.eg, args.cg, args.pgr)
+    #     else:
+    #         for ticker in args.tss:
+    #             dcfs[ticker] = DCF(args.t, args.p, args.eg, args.cg, args.pgr)
+    # elif args.t is not None:
+    #     ''' single ticker'''
+    #     if args.y > 1:
+    #         dcfs[args.t] = historical_DCF(args.t, args.y, args.p, args.eg, args.cg, args.pgr)
+    #     else:
+    #         dcfs[args.t] = DCF(args.t, args.p, args.eg, args.cg, args.pgr)
+    # else:
+    #     raise ValueError('A ticker or list of tickers must be specified with --ticker or --tickers')
+
+    earnings_growth_rates = [0.01, 0.05, 0.1, 0.15, 0.20, 0.25]
+    for egr in earnings_growth_rates:
+        dcfs[str(egr)] = historical_DCF(args.t, args.y, args.p, egr, args.cg, args.pgr)
 
     prettyprint(dcfs, args.y)
 
-    if args.t is not None:
-        '''plot a single ticker's historicals'''
-        visualize_historicals(dcfs)
+    visualize_bulk_historicals(dcfs, condition = {'earnings_growth_rates': earnings_growth_rates})
+
+    # if args.t is not None:
+    #     '''plot a single ticker's historicals'''
+    #     #visualize_historicals(dcfs)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
