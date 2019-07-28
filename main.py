@@ -11,6 +11,7 @@ future goals:
     -- More to be added.
 '''
 
+
 import argparse
 
 from modeling.data import *
@@ -47,8 +48,7 @@ def main(args):
 
     if args.t is not None:
         '''plot a single ticker's historicals'''
-        historical_share_prices = get_historical_share_prices(args.t, dates = dcfs[args.t].keys())  
-        visualize_historicals(dcfs[args.t], historical_share_prices)
+        visualize_historicals(dcfs)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

@@ -21,15 +21,18 @@ def visualize(dcf_prices, current_share_prices, regress = True):
     # TODO: implement
     return NotImplementedError
 
-def visualize_historicals(dcfs, historical_share_prices):
+def visualize_historicals(dcfs):
     '''
     2d plot comparing dcf history to share price history
     '''
     pass
 
-    # dcf_share_prices = {}
-    # for k, v in dcfs.items():
-    #     dcf_share_prices[dcfs[k]['date']] = dcfs[k]['share_price']
+    dcf_share_prices = {}
+    for k, v in dcfs.items():
+        dcf_share_prices[dcfs[k]['date']] = dcfs[k]['share_price']
 
-    # plt.scatter(xs, ys)
-    # plt.show()
+    xs = list(dcf_share_prices.keys())[::-1]
+    ys = list(dcf_share_prices.values())[::-1]
+
+    plt.scatter(xs, ys)
+    plt.show()
