@@ -1,6 +1,6 @@
 '''
 Quick visualization toolkit. I'd like to build this out to be decently powerful
-in terms of enaabling quick interpretation of DCF related data.
+in terms of enabling quick interpretation of DCF related data.
 '''
 
 import matplotlib.pyplot as plt
@@ -25,16 +25,11 @@ def visualize_historicals(dcfs, historical_share_prices):
     '''
     2d plot comparing dcf history to share price history
     '''
-    dcf_share_prices = {}
-    for k, v in dcfs.items():
-        dcf_share_prices[dcfs[k]['date']] = dcfs[k]['share_price']
+    pass
 
-    x = list(dcf_share_prices.keys())
-    y = [list(dcf_share_prices.values()),  list(historical_share_prices.values())]
-    
-    print(x, y)
+    # dcf_share_prices = {}
+    # for k, v in dcfs.items():
+    #     dcf_share_prices[dcfs[k]['date']] = dcfs[k]['share_price']
 
-    for xe, ye in zip(x, y):
-        plt.scatter([xe] * len(ye), ye)
-    
-    plt.show()
+    # plt.scatter(xs, ys)
+    # plt.show()

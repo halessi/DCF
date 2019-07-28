@@ -140,8 +140,11 @@ def get_historical_share_prices(ticker, dates):
     for date in dates:
         # TODO: fix this hack
         date_start, date_end = date + '-12-25', date + '-12-27'
-        url = 'https://financialmodelingprep.com/api/v3/historical-price-full/AAPL?from={}&to={}'.format(date_start, date_end)
-        prices[date_start] = get_jsonparsed_data(url)['historical'][0]['close']
+        url = 'https://financialmodelingprep.com/api/v3/historical-price-full/{}?from={}&to={}'.format(ticker, date_start, date_end)
+        try:
+            prices[date_start] = get_jsonparsed_data(url)['historical'][0]['close']
+        except IndexError:
+            print(get_jsonparsed_data(url))
 
     return prices
 
