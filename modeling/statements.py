@@ -22,6 +22,17 @@ def get_jsonparsed_data(url):
     data = response.read().decode('utf-8')
     return json.loads(data)
 
+def get_EV_statement(ticker):
+    '''
+    Fetch EV statement, with details like total shares outstanding, from FMP.com
+
+    args:
+        ticker: company tickerr
+    returns:
+        parsed EV statement
+    '''
+    url = 'https://financialmodelingprep.com/api/v3/enterprise-value/{}'.format(ticker)
+    return get_jsonparsed_data(url)
 
 #! TODO: maybe combine these with argument flag for which statement, seems pretty redundant tbh
 def get_income_statement(ticker, period = 'annual'):
