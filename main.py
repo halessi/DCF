@@ -5,32 +5,49 @@ description: Use primitive underlying DCF modeling to compare intrinsic per shar
     to current share price. 
 
 future goals: 
-    -- Formalize sensitivity analysis. x
+    -- Formalize sensitivity analysis. 
     -- More robust revenue forecasts in FCF. 
     -- EBITA multiples terminal value calculation.
     -- More to be added.
 '''
 
 import argparse
-from modeling.dcf import *
+
 from modeling.data import *
+from modeling.dcf import *
 from visualization.plot import *
+from visualization.printouts import *
+
 
 def main(args):
-    if args.ticker is not None:
-        # do historical DCF first
-        dcf_over_time = historical_DCF(args.ticker, args.period, args.forecast, args.eg, args.cg, args.pgr)
-        print(dcf_over_time)
-        exit()
+    '''
+    although the if statements are less than desirable, it allows rapid exploration of 
+    historical or present DCF values for either a single or list of tickers.
+    '''
 
-        share_price_over_time = historical_share_price(args.ticker, date_start, date_end)
+    dcfs = {}
+    if args.ts is not None:
+        '''list to forecast'''
+        if args.y > 1:
+            for ticker in args.ts:
+                dcfs[ticker] =  historical_DCF(args.t, args.y, args.p, args.eg, args.cg, args.pgr)
+        else:
+            for ticker in args.tss:
+                dcfs[ticker] = DCF(args.t, args.p, args.eg, args.cg, args.pgr)
+    elif args.t is not None:
+        ''' single ticker'''
+        if args.y > 1:
+            dcfs[args.t] = historical_DCF(args.t, args.y, args.p, args.eg, args.cg, args.pgr)
+        else:
+            dcfs[args.t] = DCF(args.t, args.p, args.eg, args.cg, args.pgr)
+    else:
+        raise ValueError('A ticker or list of tickers must be specified with --ticker or --tickers')
 
-    # # calculate DCF for each
-    # for company in companies:
-    #     calculated_share_price = DCF(args.ticker, args.p, args.eg, args.cg, args.pgr).get('share_price')
-    #     dcf_share_prices[company] = calculated_share_price
+    prettyprint(dcfs, args.y)
 
+    exit()
 
+    share_price_over_time = historical_share_price(args.ticker, date_start, date_end)
         
     # plot
     visualize(dcf_share_prices, current_share_prices)
@@ -39,13 +56,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--p', '--period', help = 'years to forecast', type = int, default =  5)
-    parser.add_argument('--t', '--ticker', help = 'pass a single ticker to do historical DCF', type = str)
-    parser.add_argument('--ts', '--tickers', help = 'list of company tickers', type = list, default = [])
+    parser.add_argument('--t', '--ticker', help = 'pass a single ticker to do historical DCF', type = str, default = 'AAPL')
+    parser.add_argument('--y', '--years', help = 'number of years to forecast for. default 1.', type = int, default = 1)
+    parser.add_argument('--ts', '--tickers', help = 'list of company tickers', type = list, default = None)
     parser.add_argument('--eg', '--earnings_growth_rate', help = 'growth in revenue, YoY',  type = float, default = .05)
     parser.add_argument('--cg', '--cap_ex_growth_rate', help = 'growth in cap_ex, YoY', type = float, default = 0.045)
     parser.add_argument('--pgr', '--perpetual_growth_rate', help = 'for perpetuity growth terminal value', type = float, default = 0.05)
 
     args = parser.parse_args()
     main(args)
-
-

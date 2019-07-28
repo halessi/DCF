@@ -12,14 +12,14 @@ def DCF(ticker, forecast, earnings_growth_rate, cap_ex_growth_rate, perpetual_gr
         year: if 0, returns the most recent DCF valuation available. works in years-back, e.g. year = 1 would give (most recent - 1) DCF
 
     returns:
-        CURRENT DCF VALUATION. See historical_dcf to fetch a history. 
         dict: {'share price': __, 'enterprise_value': __, 'equity_value': __, 'date': __}
+        CURRENT DCF VALUATION. See historical_dcf to fetch a history. 
 
     '''
     if ticker is not None:
-        income_statement = get_income_statement(ticker = ticker)['financials'][year:year+1] # pass year + 1 bc we need change in working capital
-        balance_statement = get_balance_statement(ticker = ticker)['financials'][year:year+1]
-        cashflow_statement = get_cashflow_statement(ticker = ticker)['financials'][year:year+1]
+        income_statement = get_income_statement(ticker = ticker)['financials'][year:year+2] # pass year + 1 bc we need change in working capital
+        balance_statement = get_balance_statement(ticker = ticker)['financials'][year:year+2]
+        cashflow_statement = get_cashflow_statement(ticker = ticker)['financials'][year:year+2]
 
         enterprise_val = enterprise_value(income_statement,
                                           cashflow_statement,
@@ -41,13 +41,13 @@ def DCF(ticker, forecast, earnings_growth_rate, cap_ex_growth_rate, perpetual_gr
             '-'*60)
 
     return {
-        'date': income_statement['date'],       # statement date used
+        'date': income_statement[0]['date'],       # statement date used
         'enterprise_value': enterprise_val,
         'equity_value': equity_val,
         'share_price': share_price
     }
 
-def historical_DCF(ticker, period, forecast, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate):
+def historical_DCF(ticker, years, forecast, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate):
     '''
     Wrap DCF to fetch DCF values over a historical timeframe, denoted period. 
 
@@ -59,10 +59,10 @@ def historical_DCF(ticker, period, forecast, earnings_growth_rate, cap_ex_growth
         {'date': dcf, ..., 'date', dcf}
     '''
     dcfs = {}
-    for year in range(0, period):
+    for year in range(0, years):
         try:
-            dcf = DCF(ticker, forecast, earnings_growth_rate,  cap_ex_growth_rate, perpetual_growth_rate)
-        except AttributeError:
+            dcf = DCF(ticker, forecast, earnings_growth_rate,  cap_ex_growth_rate, perpetual_growth_rate, year = year)
+        except IndexError:
             print('Year {} unavailable, no historical statement.'.format(year)) # catch
         dcfs[dcf['date'][0:4]] = dcf 
     
