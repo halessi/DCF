@@ -1,14 +1,18 @@
 import argparse
 from decimal import Decimal
 
-from statements import *
+from modeling.data import *
 
 def DCF(ticker, period, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate):
     '''
     a very basic 2-stage DCF implemented for learning purposes.
     see enterprise_value() for details on arguments
+
+    returns
+        dict: {'share price': __, 'enterprise_value': __, 'equity_value': __}
+
     '''
-    if args.ticker is not None:
+    if ticker is not None:
         enterprise_val = enterprise_value(ticker,
                               period, 
                               earnings_growth_rate, 
@@ -23,13 +27,14 @@ def DCF(ticker, period, earnings_growth_rate, cap_ex_growth_rate, perpetual_grow
     equity_val += ev_statement['- Cash & Cash Equivalents']
     share_price = equity_val/float(ev_statement['Number of Shares'])
 
-    print('\nEnterprise Value for {}: ${}.'.format(args.ticker, '%.2E' % Decimal(str(enterprise_val))), 
-          '\nEquity Value for {}: ${}.'.format(args.ticker, '%.2E' % Decimal(str(equity_val))),
-          '\nPer share value for {}: ${}'.format(args.ticker, '%.2E' % Decimal(str(share_price))))
+    print('\nEnterprise Value for {}: ${}.'.format(ticker, '%.2E' % Decimal(str(enterprise_val))), 
+              '\nEquity Value for {}: ${}.'.format(ticker, '%.2E' % Decimal(str(equity_val))),
+           '\nPer share value for {}: ${}.'.format(ticker, '%.2E' % Decimal(str(share_price))))
+    print('-'*60)
 
     return {
         'enterprise_value': enterprise_val,
-        'equity_val': equity_val,
+        'equity_value': equity_val,
         'share_price': share_price
     }
 
@@ -93,8 +98,8 @@ def enterprise_value(ticker, period, earnings_growth_rate, cap_ex_growth_rate, p
     flows = []
 
     # Now let's iterate through years to calculate FCF, starting with most recent year
-    print('\nForecasting flows for {} years out, starting with at date {} with earnings growth {}.'.format(period, income_statement[0]['date'], earnings_growth_rate))  
-    print('         DFCF   |    EBIT   |    D&A    |    CWC     |   CAP_EX   | ')
+    print('Forecasting flows for {} years out, starting with at date {}.'.format(period, income_statement[0]['date']),
+         ('\n         DFCF   |    EBIT   |    D&A    |    CWC     |   CAP_EX   | '))
     for yr in range(1, period+1):    
 
         # increment each value by growth rate
@@ -122,7 +127,7 @@ def enterprise_value(ticker, period, earnings_growth_rate, cap_ex_growth_rate, p
     final_cashflow = flows[-1] * (1 + perpetual_growth_rate)
     TV = final_cashflow/(discount - perpetual_growth_rate)
     NPV_TV = TV/(1+discount)**(1+period)
-    print('\nTerminal value for {} in {} years: {}.'.format(ticker, 1+period, '%.2E' % Decimal(str(NPV_TV))))
+    print('Terminal value for {} in {} years: {}.'.format(ticker, 1+period, '%.2E' % Decimal(str(NPV_TV))))
 
     return NPV_TV+NPV_FCF
 

@@ -96,6 +96,35 @@ def get_balance_statement(ticker, period = 'annual'):
 
     return get_jsonparsed_data(url)
 
+def get_stock_price(ticker):
+    '''
+    Fetches the stock price for a ticker
+
+    args:
+        ticker
+    
+    returns:
+        {'symbol': ticker, 'price': price}
+    '''
+    url = 'https://financialmodelingprep.com/api/v3/stock/real-time-price/{}'.format(ticker)
+    return get_jsonparsed_data(url)
+
+def get_batch_stock_prices(tickers):
+    '''
+    Fetch the stock prices for a list of tickers.
+
+    args:
+        tickers: a list of  tickers........
+    
+    returns:
+        dict of {'ticker':  price}
+    '''
+    prices = {}
+    for ticker in tickers:
+        prices['ticker'] = get_stock_price(ticker)['price']
+
+    return prices
+
 if __name__ == '__main__':
     ''' quick test, to use run data.py directly '''
 
