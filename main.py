@@ -45,12 +45,10 @@ def main(args):
 
     prettyprint(dcfs, args.y)
 
-    exit()
-
-    share_price_over_time = historical_share_price(args.ticker, date_start, date_end)
-        
-    # plot
-    visualize(dcf_share_prices, current_share_prices)
+    if args.t is not None:
+        '''plot a single ticker's historicals'''
+        historical_share_prices = get_historical_share_prices(args.t, dates = dcfs[args.t].keys())  
+        visualize_historicals(dcfs[args.t], historical_share_prices)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

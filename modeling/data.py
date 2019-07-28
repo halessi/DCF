@@ -125,6 +125,26 @@ def get_batch_stock_prices(tickers):
 
     return prices
 
+def get_historical_share_prices(ticker, dates):
+    '''
+    Fetch the stock price for a ticker at the dates listed.
+
+    args:
+        ticker: a ticker.
+        dates: a list of dates from which to fetch close price.
+
+    returns:
+        {'date': price, ...}
+    '''
+    prices = {}
+    for date in dates:
+        # TODO: fix this hack
+        date_start, date_end = date + '-12-25', date + '-12-27'
+        url = 'https://financialmodelingprep.com/api/v3/historical-price-full/AAPL?from={}&to={}'.format(date_start, date_end)
+        prices[date_start] = get_jsonparsed_data(url)['historical'][0]['close']
+
+    return prices
+
 if __name__ == '__main__':
     ''' quick test, to use run data.py directly '''
 
