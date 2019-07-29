@@ -46,15 +46,11 @@ def main(args):
 
     earnings_growth_rates = [0.01, 0.05, 0.1, 0.15, 0.20, 0.25]
     for egr in earnings_growth_rates:
-        dcfs[str(egr)] = historical_DCF(args.t, args.y, args.p, egr, args.cg, args.pgr)
+        dcfs[str(egr)] = historical_DCF(args.t, args.y, args.p, egr, args.cg, args.pgr, args.i)
 
     prettyprint(dcfs, args.y)
 
     visualize_bulk_historicals(dcfs, condition = {'earnings_growth_rates': earnings_growth_rates})
-
-    # if args.t is not None:
-    #     '''plot a single ticker's historicals'''
-    #     #visualize_historicals(dcfs)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -62,6 +58,7 @@ if __name__ == '__main__':
     parser.add_argument('--p', '--period', help = 'years to forecast', type = int, default =  5)
     parser.add_argument('--t', '--ticker', help = 'pass a single ticker to do historical DCF', type = str, default = 'AAPL')
     parser.add_argument('--y', '--years', help = 'number of years to forecast for. default 1.', type = int, default = 1)
+    parser.add_argument('--i', '--interval', help = 'interval period for each calc, either "annual" or "quarter"', default = 'annual')
     parser.add_argument('--ts', '--tickers', help = 'list of company tickers', type = list, default = None)
     parser.add_argument('--eg', '--earnings_growth_rate', help = 'growth in revenue, YoY',  type = float, default = .05)
     parser.add_argument('--cg', '--cap_ex_growth_rate', help = 'growth in cap_ex, YoY', type = float, default = 0.045)

@@ -22,7 +22,7 @@ def get_jsonparsed_data(url):
     data = response.read().decode('utf-8')
     return json.loads(data)
 
-def get_EV_statement(ticker):
+def get_EV_statement(ticker, period = 'annual'):
     '''
     Fetch EV statement, with details like total shares outstanding, from FMP.com
 
@@ -31,7 +31,10 @@ def get_EV_statement(ticker):
     returns:
         parsed EV statement
     '''
-    url = 'https://financialmodelingprep.com/api/v3/enterprise-value/{}'.format(ticker)
+    if period == 'annual':
+        url = 'https://financialmodelingprep.com/api/v3/enterprise-value/{}'.format(ticker)
+    elif period == 'quarter':
+        url = 'https://financialmodelingprep.com/api/v3/enterprise-value/{}?period=quarter'.format(ticker)
     return get_jsonparsed_data(url)
 
 #! TODO: maybe combine these with argument flag for which statement, seems pretty redundant tbh
@@ -49,7 +52,7 @@ def get_income_statement(ticker, period = 'annual'):
     if period == 'annual':
         url = 'https://financialmodelingprep.com/api/v3/financials/income-statement/{}'.format(ticker)
     elif period == 'quarter':
-        url = 'https://financialmodelingprep.com/api/v3/financials/income-statement/{}?period=quarter'(ticker)
+        url = 'https://financialmodelingprep.com/api/v3/financials/income-statement/{}?period=quarter'.format(ticker)
     else:
         raise ValueError("in get_income_statement: invalid period")     # may as well throw...
 
@@ -70,7 +73,7 @@ def get_cashflow_statement(ticker, period = 'annual'):
     if period == 'annual':
         url = 'https://financialmodelingprep.com/api/v3/financials/cash-flow-statement/{}'.format(ticker)
     elif period == 'quarter':
-        url = 'https://financialmodelingprep.com/api/v3/financials/cash-flow-statement/{}?period=quarter'(ticker)
+        url = 'https://financialmodelingprep.com/api/v3/financials/cash-flow-statement/{}?period=quarter'.format(ticker)
     else:
         raise ValueError("in get_cashflow_statement: invalid period")     # may as well throw...
 
@@ -90,7 +93,7 @@ def get_balance_statement(ticker, period = 'annual'):
     if period == 'annual':
         url = 'https://financialmodelingprep.com/api/v3/financials/balance-sheet-statement/{}'.format(ticker)
     elif period == 'quarter':
-        url = 'https://financialmodelingprep.com/api/v3/financials/balance-sheet-statement/{}?period=quarter'(ticker)
+        url = 'https://financialmodelingprep.com/api/v3/financials/balance-sheet-statement/{}?period=quarter'.format(ticker)
     else:
         raise ValueError("in get_balancesheet_statement: invalid period")     # may as well throw...
 
