@@ -4,6 +4,10 @@ in terms of enabling quick interpretation of DCF related data.
 '''
 
 import matplotlib.pyplot as plt
+import seaborn as sns
+
+sns.set()
+sns.set_context('paper')
 
 
 def visualize(dcf_prices, current_share_prices, regress = True):
@@ -26,14 +30,30 @@ def visualize_bulk_historicals(dcfs, condition):
     '''
     multiple 2d plot comparing historical DCFS of different growth
     assumption conditions
+
+    args:
+        dcfs: list of dcfs of format {'value1', {'year1': dcf}, ...}
+        condition: dict of format {'condition': [value1, value2, value3]}
+
     '''
     dcf_share_prices = {}
-    
-    for condition in condition.values():
-        for year in dcfs[condition].keys():
-            
+    conditions = [str(cond) for cond in list(condition.values())[0]]
 
-    xs = list(dcf_share_prices.keys())[::-1]
+    for cond in conditions:
+        dcf_share_prices[cond] = {}
+        years = dcfs[cond].keys()
+        for year in years:
+            dcf_share_prices[cond][year] = dcfs[cond][year]['share_price']
+
+    for cond in conditions:
+        plt.plot(list(dcf_share_prices[cond].keys())[::-1], 
+                 list(dcf_share_prices[cond].values())[::-1], label = cond)
+
+    plt.xlabel('Date')
+    plt.ylabel('Share price $')
+    plt.legend(loc = 'upper right')
+    plt.title(list(condition.keys())[0])
+    plt.show()
 
 def visualize_historicals(dcfs):
     '''
