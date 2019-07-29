@@ -44,13 +44,22 @@ def main(args):
     # else:
     #     raise ValueError('A ticker or list of tickers must be specified with --ticker or --tickers')
 
-    earnings_growth_rates = [0.01, 0.05, 0.1, 0.15, 0.20, 0.25]
-    for egr in earnings_growth_rates:
-        dcfs[str(egr)] = historical_DCF(args.t, args.y, args.p, egr, args.cg, args.pgr, args.i)
+    dcfs = {}
+    if args.s > 0:
+        cond = {'increment by {}'.format(args.s) : []}
+        for increment in range(1, 6): #default to 5 increases?
+            egr = args.eg * (1 + (args.s * increment))
+            cgr = args.cg * (1 + (args.s * increment))
+            pgr = args.pg * (1 + (args.s * increment))
+            step = 'egr: {}, cgr: {}, pgr {}'.format(egr, cgr, pgr)
+            cond['increment by {}'.format(args.s)].append(step)
+            dcfs[step] = historical_DCF(args.t, args.y, args.p, egr, cgr, pgr, args.i)
+    else:
+        dcf = historical_DCF(args.t, args.y, args.p, args.eg, args.cg, args.pg, args.i)
 
     prettyprint(dcfs, args.y)
 
-    visualize_bulk_historicals(dcfs, condition = {'earnings_growth_rates': earnings_growth_rates})
+    visualize_bulk_historicals(dcfs, condition = cond)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -59,10 +68,11 @@ if __name__ == '__main__':
     parser.add_argument('--t', '--ticker', help = 'pass a single ticker to do historical DCF', type = str, default = 'AAPL')
     parser.add_argument('--y', '--years', help = 'number of years to forecast for. default 1.', type = int, default = 1)
     parser.add_argument('--i', '--interval', help = 'interval period for each calc, either "annual" or "quarter"', default = 'annual')
+    parser.add_argument('--s', '--step_increase', help = 'specify step increase for EG, CG, PG to enable comparisons.', type = float, default = 0)
     parser.add_argument('--ts', '--tickers', help = 'list of company tickers', type = list, default = None)
     parser.add_argument('--eg', '--earnings_growth_rate', help = 'growth in revenue, YoY',  type = float, default = .05)
     parser.add_argument('--cg', '--cap_ex_growth_rate', help = 'growth in cap_ex, YoY', type = float, default = 0.045)
-    parser.add_argument('--pgr', '--perpetual_growth_rate', help = 'for perpetuity growth terminal value', type = float, default = 0.05)
+    parser.add_argument('--pg', '--perpetual_growth_rate', help = 'for perpetuity growth terminal value', type = float, default = 0.05)
 
     args = parser.parse_args()
     main(args)
