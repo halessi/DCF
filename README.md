@@ -50,7 +50,7 @@ perpetual_growth_rate   | specified rate of perpetual growth for calculating ter
 
 ### References
 
-[1] http://people.stern.nyu.edu/adamodar/pdfiles/eqnotes/dcfcf.pdf
-[2] http://people.stern.nyu.edu/adamodar/pdfiles/basics.pdf
-[3] https://www.oreilly.com/library/view/valuation-techniques-discounted/9781118417607/xhtml/sec30.html
+[1] http://people.stern.nyu.edu/adamodar/pdfiles/eqnotes/dcfcf.pdf                                                      
+[2] http://people.stern.nyu.edu/adamodar/pdfiles/basics.pdf                                                     
+[3] https://www.oreilly.com/library/view/valuation-techniques-discounted/9781118417607/xhtml/sec30.html                     
 [4] https://www.cchwebsites.com/content/calculators/BusinessValuation.html
