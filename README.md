@@ -20,27 +20,27 @@ As of now, command line arguments are used to parse parameters. See main.py for 
 
 ```
 python main.py \
-        --period        # how many years to directly forecast Free Cash Flows to Firm
-        --ticker        # ticker of the company, used for pulling financials
-        --years         # if computing historical DCFs, the number of years back to compute
-        --interval      # can compute DCFs historically on either an 'annual' or 'quarter' basis. if quarter is indicated, total number of DCFS = years * 4
-        --step_increase # sensitivity analysis: if this is specified, DCFs will be computed for default + (step_increase * interval_number), showing specifically how changing the underlying assumption impacts valuation
-        --steps         # number of steps to take (for step_increase)
-        --variable      # the variable to increase each step, those available are: earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate, discount_rate, [more to come..]
-        --discount_rate # specified discount_rate (W.A.C.C., it'd be nice (i think) if we dynamically calculated this)
-        --earnings_growth_rate # specified rate of earnings growth (EBIT)
-        --perpetual_growth_rate # specified rate of perpetual growth for calculating terminal value after __period__ years, EBITDA multiples coming
+        --period        
+        --ticker        
+        --years         
+        --interval      
+        --step_increase 
+        --steps         
+        --variable      
+        --discount_rate 
+        --earnings_growth_rate 
+        --perpetual_growth_rate 
 ```
 
-Argument                | Usage
+__Argument              | Usage__
 ----------------------- | ------------------
 period                  | how many years to directly forecast Free Cash Flows to Firm
 ticker                  | ticker of the company, used for pulling financials
 years                   | if computing historical DCFs (i.e. years > 1), the number of years back to compute
 interval                | can compute DCFs historically on either an 'annual' or 'quarter' basis. if quarter is indicated, total number of DCFS = years * 4
-step_increase           |
-steps                   |       
-variable                |
-discount_rate           |
-earnings_growth_rate    |
-perpetual_growth_rate   |
+step_increase           | __some sensitivity analysis__: if this is specified, DCFs will be computed for default + (step_increase * interval_number), showing specifically how changing the underlying assumption impacts valuation
+steps                   | number of steps to take (for step_increase)
+variable                | the variable to increase each step, those available are: earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate, discount_rate, [more to come..]
+discount_rate           | specified discount_rate (W.A.C.C., it'd be nice (i think) if we dynamically calculated this)
+earnings_growth_rate    | specified rate of earnings growth (EBIT)
+perpetual_growth_rate   | specified rate of perpetual growth for calculating terminal value after __period__ years, EBITDA multiples coming
