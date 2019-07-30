@@ -1,6 +1,6 @@
 # DCF: Discounted Cash Flows
 
-I've worked to create this as part of an effort to familiarize myself with calculating discounted cash flows. 
+I've worked to create this as part of an effort to familiarize myself with calculating discounted cash flows.  :chart_with_upwards_trend:
 
 I have found tweaking each of the configurable variables (CapEx growth, Revenue growth, discount rate, etc) to help with developing an insight into how the assumptions made when doing discounted cash flows play a role on the end valuation. This insight is essential to utilizing DCF effectively.
 
@@ -9,6 +9,7 @@ This library also enables comparisons to where the underlying entity has traded 
 **Obviously one cannot utilize this visualization to say very much about the quality of their DCF and assumptions made.** It is much more helpful when one is very __certain of the valuation they've derived__ and is hoping to understand how the stock has traded in relation to that in the past, i.e. at a premium or discount.
 
 Next steps: implement dynamic discount rate calculation, multivariable earnings growth rate calculations, EBITDA multiples for terminal value
+:part_alternation_mark:
 
 ### Dependencies
 
@@ -32,7 +33,7 @@ python main.py \
         --perpetual_growth_rate 
 ```
 
-__Argument              | Usage__
+  Argument              | Usage          
 ----------------------- | ------------------
 period                  | how many years to directly forecast Free Cash Flows to Firm
 ticker                  | ticker of the company, used for pulling financials
