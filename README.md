@@ -2,7 +2,7 @@
 
 __I'll be updating this as I continue studying valuation methodologies, and intend to do a comparison of comps/DCF valuations :moneybag: next (to highlight the differences between relative/absolute methodologies).__ If you notice any errors or have any questions/suggestions, please reach out! ***hughalessi@gmail.com*** 
 
-I've worked to create this as part of an effort to familiarize myself with calculating discounted cash flows.  :chart_with_upwards_trend: :chart_with_downwards_trend:
+A discounted cash flow library written in Python, I've worked to create this as part of an effort to familiarize myself with calculating discounted cash flows.  :chart_with_upwards_trend: :chart_with_downwards_trend:
 
 I have found tweaking each of the configurable variables (CapEx growth, Revenue growth, discount rate, etc) to help with developing an insight into how the assumptions made when doing discounted cash flows play a role on the end valuation. This insight is essential to utilizing DCF effectively.
 
