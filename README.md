@@ -48,6 +48,35 @@ discount_rate           | specified discount_rate (W.A.C.C., it'd be nice (i thi
 earnings_growth_rate    | specified rate of earnings growth (EBIT)
 perpetual_growth_rate   | specified rate of perpetual growth for calculating terminal value after __period__ years, EBITDA multiples coming
 
+### Example
+
+If we want to examine historical DCFS for $AAPL, we can run:
+
+```python main.py --t AAPL --i 'quarter' --y 3 --eg .15 --steps 2 --s 0.1 --v eg ```
+
+This pulls the financials for AAPL for each quarter 3 years (--y) back to calculate 12 DCFs (3 years * 4 quarters), starting at a base earnings growth of 15% (--eg) and increasing for two steps (--steps) by 10% (--s), with --v specifying that earnings growth is the variable we want to increment. 
+
+Terminal outputs some details just for us to keep an eye on:
+
+```
+Forecasting flows for 5 years out, starting with at date 2018-12-29. 
+         DFCF   |    EBIT   |    D&A    |    CWC     |   CAP_EX   | 
+2019   2.35E+10 |  2.79E+10 |  3.96E+09 |  2.17E+09 |  -3.51E+09 | 
+2020   2.80E+10 |  3.70E+10 |  5.26E+09 |  1.52E+09 |  -3.82E+09 | 
+2021   3.82E+10 |  5.54E+10 |  7.86E+09 |  1.06E+09 |  -4.34E+09 | 
+2022   5.84E+10 |  9.19E+10 |  1.31E+10 |  7.44E+08 |  -5.12E+09 | 
+2023   9.82E+10 |  1.68E+11 |  2.38E+10 |  5.21E+08 |  -6.27E+09 | 
+
+Enterprise Value for AAPL: $1.41E+12. 
+Equity Value for AAPL: $1.34E+12. 
+Per share value for AAPL: $2.81E+02.
+```
+This provides a quick way to dive a bit deeper into what happened without necessarily needing to pull apart the code. 
+
+![Optional Text](../master/imgs/AAPL_eg.png)
+
+Evident here is the increase in per share value of AAPL with the increase in forecasted earnings growth. On the quarterly basis we see a large degree of seasonal variation, indicating that perhaps this particular DCF would benefit from a more specific forecasting of cash flows. 
+
 ### References
 
 [1] http://people.stern.nyu.edu/adamodar/pdfiles/eqnotes/dcfcf.pdf                                                      
