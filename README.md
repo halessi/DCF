@@ -33,11 +33,11 @@ python main.py \
 ```
 
 Argument                | Usage
------------------------ | -------------
+----------------------- | ------------------
 period                  | how many years to directly forecast Free Cash Flows to Firm
 ticker                  | ticker of the company, used for pulling financials
 years                   | if computing historical DCFs (i.e. years > 1), the number of years back to compute
-interval                |
+interval                | can compute DCFs historically on either an 'annual' or 'quarter' basis. if quarter is indicated, total number of DCFS = years * 4
 step_increase           |
 steps                   |       
 variable                |
