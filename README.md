@@ -12,7 +12,7 @@ Next steps: implement dynamic discount rate calculation, multivariable earnings 
 
 ### Dependencies
 
-```pip install matplotlib urllib seaborn```
+```pip install matplotlib urllib3 seaborn```
 
 ### Basic usage
 
