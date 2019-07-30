@@ -31,3 +31,16 @@ python main.py \
         --earnings_growth_rate # specified rate of earnings growth (EBIT)
         --perpetual_growth_rate # specified rate of perpetual growth for calculating terminal value after __period__ years, EBITDA multiples coming
 ```
+
+Argument                | Usage
+----------------------- | -------------
+period                  | how many years to directly forecast Free Cash Flows to Firm
+ticker                  | ticker of the company, used for pulling financials
+years                   | if computing historical DCFs (i.e. years > 1), the number of years back to compute
+interval                |
+step_increase           |
+steps                   |       
+variable                |
+discount_rate           |
+earnings_growth_rate    |
+perpetual_growth_rate   |
