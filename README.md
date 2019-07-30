@@ -6,6 +6,8 @@ I have found tweaking each of the configurable variables (CapEx growth, Revenue 
 
 This library also enables comparisons to where the underlying entity has traded over the historical DCFs calculated, enabling an immediate illustration of where the stock has traded in relation to its intrinsic value.
 
+If you notice any errors or have any questions/suggestions, please reach out! ***hughalessi@gmail.com***
+
 **Obviously one cannot utilize this visualization to say very much about the quality of their DCF and assumptions made.** It is much more helpful when one is very __certain of the valuation they've derived__ and is hoping to understand how the stock has traded in relation to that in the past, i.e. at a premium or discount.
 
 Next steps: implement dynamic discount rate calculation, multivariable earnings growth rate calculations, EBITDA multiples for terminal value
@@ -35,7 +37,7 @@ python main.py \
 
   Argument              | Usage          
 ----------------------- | ------------------
-period                  | how many years to directly forecast Free Cash Flows to Firm
+period                  | how many years to directly forecast [Free Cash Flows](https://financeformulas.net/Free-Cash-Flow-to-Firm.html)
 ticker                  | ticker of the company, used for pulling financials
 years                   | if computing historical DCFs (i.e. years > 1), the number of years back to compute
 interval                | can compute DCFs historically on either an 'annual' or 'quarter' basis. if quarter is indicated, total number of DCFS = years * 4
@@ -45,3 +47,10 @@ variable                | the variable to increase each step, those available ar
 discount_rate           | specified discount_rate (W.A.C.C., it'd be nice (i think) if we dynamically calculated this)
 earnings_growth_rate    | specified rate of earnings growth (EBIT)
 perpetual_growth_rate   | specified rate of perpetual growth for calculating terminal value after __period__ years, EBITDA multiples coming
+
+### References
+
+[1] http://people.stern.nyu.edu/adamodar/pdfiles/eqnotes/dcfcf.pdf
+[2] http://people.stern.nyu.edu/adamodar/pdfiles/basics.pdf
+[3] https://www.oreilly.com/library/view/valuation-techniques-discounted/9781118417607/xhtml/sec30.html
+[4] https://www.cchwebsites.com/content/calculators/BusinessValuation.html
