@@ -60,7 +60,7 @@ Terminal outputs some details just for us to keep an eye on:
 
 ```
 Forecasting flows for 5 years out, starting with at date 2018-12-29. 
-         DFCF   |    EBIT   |    D&A    |    CWC     |   CAP_EX   | 
+         DFCF   |    EBIT   |    D&A    |    CWC    |   CAP_EX   | 
 2019   2.35E+10 |  2.79E+10 |  3.96E+09 |  2.17E+09 |  -3.51E+09 | 
 2020   2.80E+10 |  3.70E+10 |  5.26E+09 |  1.52E+09 |  -3.82E+09 | 
 2021   3.82E+10 |  5.54E+10 |  7.86E+09 |  1.06E+09 |  -4.34E+09 | 
