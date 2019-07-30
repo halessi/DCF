@@ -1,6 +1,6 @@
-# DCF: Discounted Cash Flows
+# DCF: Discounted Cash Flows :moneybag:
 
-__I'll be updating this as I continue studying valuation methodologies, and intend to do a comparison of comps/DCF valuations :moneybag: next (to highlight the differences between relative/absolute methodologies).__ If you notice any errors or have any questions/suggestions, please reach out! ***hughalessi@gmail.com*** 
+__I'll be updating this as I continue studying valuation methodologies, and intend to do a comparison of comps/DCF valuations next (to highlight the differences between relative/absolute methodologies).__ If you notice any errors or have any questions/suggestions, please reach out! ***hughalessi@gmail.com*** 
 
 A discounted cash flow library written in Python, I've worked to create this as part of an effort to familiarize myself with calculating discounted cash flows.  :chart_with_upwards_trend: :chart_with_downwards_trend:
 
