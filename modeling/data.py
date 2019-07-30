@@ -141,13 +141,16 @@ def get_historical_share_prices(ticker, dates):
     '''
     prices = {}
     for date in dates:
-        # TODO: fix this hack
-        date_start, date_end = date + '-12-25', date + '-12-27'
+        date_start, date_end = date[0:8] + str(int(date[8:]) - 2), date
         url = 'https://financialmodelingprep.com/api/v3/historical-price-full/{}?from={}&to={}'.format(ticker, date_start, date_end)
         try:
-            prices[date_start] = get_jsonparsed_data(url)['historical'][0]['close']
+            prices[date_end] = get_jsonparsed_data(url)['historical'][0]['close']
         except IndexError:
-            print(get_jsonparsed_data(url))
+            #  RIP nested try catch, so many issues with dates just try a bunch and get within range of earnings release
+            try:
+                prices[date_start] = get_jsonparsed_data(url)['historical'][0]['close']
+            except IndexError:
+                print(date + ' ', get_jsonparsed_data(url))
 
     return prices
 

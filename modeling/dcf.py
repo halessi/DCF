@@ -158,8 +158,6 @@ def enterprise_value(income_statement, cashflow_statement, balance_statement, pe
     print('Forecasting flows for {} years out, starting with at date {}.'.format(period, income_statement[0]['date']),
          ('\n         DFCF   |    EBIT   |    D&A    |    CWC     |   CAP_EX   | '))
     for yr in range(1, period+1):    
-        
-        print(ebit, non_cash_charges, cwc, cap_ex)
 
         # increment each value by growth rate
         ebit = ebit * (1 + (yr * earnings_growth_rate))

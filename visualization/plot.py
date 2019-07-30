@@ -3,8 +3,13 @@ Quick visualization toolkit. I'd like to build this out to be decently powerful
 in terms of enabling quick interpretation of DCF related data.
 '''
 
+import sys
+
 import matplotlib.pyplot as plt
 import seaborn as sns
+
+sys.path.append('..')
+from modeling.data import *
 
 sns.set()
 sns.set_context('paper')
@@ -26,7 +31,7 @@ def visualize(dcf_prices, current_share_prices, regress = True):
     # TODO: implement
     return NotImplementedError
 
-def visualize_bulk_historicals(dcfs, condition):
+def visualize_bulk_historicals(dcfs, ticker, condition):
     '''
     multiple 2d plot comparing historical DCFS of different growth
     assumption conditions
@@ -37,6 +42,7 @@ def visualize_bulk_historicals(dcfs, condition):
 
     '''
     dcf_share_prices = {}
+    variable = list(condition.keys())[0]
     
     #TODO: make this more eloquent for handling the plotting of multiple condition formats
     try:
@@ -55,11 +61,19 @@ def visualize_bulk_historicals(dcfs, condition):
         plt.plot(list(dcf_share_prices[cond].keys())[::-1], 
                  list(dcf_share_prices[cond].values())[::-1], label = cond)
 
+    # sorry for anybody reading this, bit too pythonic
+    # the second argument here just fetches the list of dates we're using as x values
+    # in the above plt.plot() call without knowing the conditions we index with abo
+    historical_stock_prices = get_historical_share_prices(ticker, 
+                                                          list(dcf_share_prices[list(dcf_share_prices.keys())[0]].keys())[::-1])
+    plt.plot(list(historical_stock_prices.keys()),
+             list(historical_stock_prices.values()), label = '${} over time'.format(ticker))
+
     plt.xlabel('Date')
     plt.ylabel('Share price ($)')
     plt.legend(loc = 'upper right')
-    plt.title(list(condition.keys())[0])
-    plt.savefig('imgs/')
+    plt.title('$' + ticker + '  ')
+    plt.savefig('imgs/{}_{}.png'.format(ticker, list(condition.keys())[0]))
     plt.show()
 
 def visualize_historicals(dcfs):
