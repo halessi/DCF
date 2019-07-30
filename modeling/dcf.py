@@ -9,7 +9,7 @@ def DCF(ticker, ev_statement, income_statement, balance_statement, cashflow_stat
     see enterprise_value() for details on arguments. 
 
     args:
-        see enterprise value...
+        see enterprise value for more info...
 
     returns:
         dict: {'share price': __, 'enterprise_value': __, 'equity_value': __, 'date': __}
