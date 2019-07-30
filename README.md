@@ -18,7 +18,8 @@ Next steps: implement dynamic discount rate calculation, multivariable earnings 
 
 As of now, command line arguments are used to parse parameters. See main.py for defaults. Here is a description of the parameters: (as of now)
 
-```python main.py \
+```
+python main.py \
         --period        # how many years to directly forecast Free Cash Flows to Firm
         --ticker        # ticker of the company, used for pulling financials
         --years         # if computing historical DCFs, the number of years back to compute
@@ -30,8 +31,3 @@ As of now, command line arguments are used to parse parameters. See main.py for 
         --earnings_growth_rate # specified rate of earnings growth (EBIT)
         --perpetual_growth_rate # specified rate of perpetual growth for calculating terminal value after __period__ years, EBITDA multiples coming
 ```
-
-
-### Examining the impact of changing the discount rate on Net Present Value
-
-[something here]
