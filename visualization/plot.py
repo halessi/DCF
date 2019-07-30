@@ -42,6 +42,7 @@ def visualize_bulk_historicals(dcfs, condition):
     try:
         conditions = [str(cond) for cond in list(condition.values())[0]]
     except IndexError:
+        print(condition)
         conditions = [condition['Ticker']]
 
     for cond in conditions:
@@ -55,9 +56,10 @@ def visualize_bulk_historicals(dcfs, condition):
                  list(dcf_share_prices[cond].values())[::-1], label = cond)
 
     plt.xlabel('Date')
-    plt.ylabel('Share price $')
+    plt.ylabel('Share price ($)')
     plt.legend(loc = 'upper right')
     plt.title(list(condition.keys())[0])
+    plt.savefig('imgs/')
     plt.show()
 
 def visualize_historicals(dcfs):

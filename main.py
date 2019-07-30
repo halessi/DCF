@@ -34,12 +34,13 @@ def main(args):
         else:
             raise ValueError('If step (-- s) is > 0, you must specify the variable via --v. What was passed is invalid.')
     else:
-        cond, dcfs = {}, {'Ticker': [args.t]}
+        cond, dcfs = {'Ticker': [args.t]}, {}
         dcfs[args.t] = historical_DCF(args.t, args.y, args.p, args.d, args.eg, args.cg, args.pg, args.i)
 
-    prettyprint(dcfs, args.y)
-
-    visualize_bulk_historicals(dcfs, condition = cond)
+    if args.y > 0:
+        visualize_bulk_historicals(dcfs, condition = cond)
+    else:
+        prettyprint(dcfs, args.y)
 
 def run_setup(args, variable):
     dcfs, cond = {}, {args.v: []}
