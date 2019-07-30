@@ -3,7 +3,7 @@ from decimal import Decimal
 
 from modeling.data import *
 
-def DCF(ticker, ev_statement, income_statement, balance_statement, cashflow_statement, forecast, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate):
+def DCF(ticker, ev_statement, income_statement, balance_statement, cashflow_statement, discount_rate, forecast, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate):
     '''
     a very basic 2-stage DCF implemented for learning purposes.
     see enterprise_value() for details on arguments. 
@@ -20,6 +20,7 @@ def DCF(ticker, ev_statement, income_statement, balance_statement, cashflow_stat
                                         cashflow_statement,
                                         balance_statement,
                                         forecast, 
+                                        discount_rate,
                                         earnings_growth_rate, 
                                         cap_ex_growth_rate, 
                                         perpetual_growth_rate)
@@ -39,7 +40,7 @@ def DCF(ticker, ev_statement, income_statement, balance_statement, cashflow_stat
         'share_price': share_price
     }
 
-def historical_DCF(ticker, years, forecast, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate, interval = 'annual'):
+def historical_DCF(ticker, years, forecast, discount_rate, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate, interval = 'annual'):
     '''
     Wrap DCF to fetch DCF values over a historical timeframe, denoted period. 
 
@@ -69,6 +70,7 @@ def historical_DCF(ticker, years, forecast, earnings_growth_rate, cap_ex_growth_
                     income_statement[interval:interval+2],        # pass year + 1 bc we need change in working capital
                     balance_statement[interval:interval+2],
                     cashflow_statement[interval:interval+2],
+                    discount_rate,
                     forecast, 
                     earnings_growth_rate,  
                     cap_ex_growth_rate, 
@@ -125,7 +127,7 @@ def equity_value(enterprise_value, enterprise_value_statement):
 
     return equity_val,  share_price
 
-def enterprise_value(income_statement, cashflow_statement, balance_statement, period, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate):
+def enterprise_value(income_statement, cashflow_statement, balance_statement, period, discount_rate, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate):
     '''
     Calculate enterprise value by NPV of explicit _period_ free cash flows + NPV of terminal value,
     both discounted by W.A.C.C.
@@ -148,7 +150,7 @@ def enterprise_value(income_statement, cashflow_statement, balance_statement, pe
     cwc = (float(balance_statement[0]['Total assets']) - float(balance_statement[0]['Total non-current assets'])) - \
           (float(balance_statement[1]['Total assets']) - float(balance_statement[1]['Total non-current assets']))
     cap_ex = float(cashflow_statement[0]['Capital Expenditure'])
-    discount = get_discount_rate()
+    discount = discount_rate
 
     flows = []
 
@@ -156,16 +158,18 @@ def enterprise_value(income_statement, cashflow_statement, balance_statement, pe
     print('Forecasting flows for {} years out, starting with at date {}.'.format(period, income_statement[0]['date']),
          ('\n         DFCF   |    EBIT   |    D&A    |    CWC     |   CAP_EX   | '))
     for yr in range(1, period+1):    
+        
+        print(ebit, non_cash_charges, cwc, cap_ex)
 
         # increment each value by growth rate
-        ebit = ebit * (1 + earnings_growth_rate)
-        non_cash_charges = non_cash_charges * (1 + earnings_growth_rate)
-        cwc = cwc * 0.9                             # TODO: evaluate this cwc rate? 0.1 annually?
-        cap_ex = cap_ex * (1 + cap_ex_growth_rate)         
+        ebit = ebit * (1 + (yr * earnings_growth_rate))
+        non_cash_charges = non_cash_charges * (1 + (yr * earnings_growth_rate))
+        cwc = cwc * 0.7                             # TODO: evaluate this cwc rate? 0.1 annually?
+        cap_ex = cap_ex * (1 + (yr * cap_ex_growth_rate))         
 
         # discount by WACC
         flow = ulFCF(ebit, tax_rate, non_cash_charges, cwc, cap_ex)
-        PV_flow = flow/(1 + discount)**yr
+        PV_flow = flow/((1 + discount)**yr)
         flows.append(PV_flow)
 
         print(str(int(income_statement[0]['date'][0:4]) + yr) + '  ',

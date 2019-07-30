@@ -37,7 +37,12 @@ def visualize_bulk_historicals(dcfs, condition):
 
     '''
     dcf_share_prices = {}
-    conditions = [str(cond) for cond in list(condition.values())[0]]
+    
+    #TODO: make this more eloquent for handling the plotting of multiple condition formats
+    try:
+        conditions = [str(cond) for cond in list(condition.values())[0]]
+    except IndexError:
+        conditions = [condition['Ticker']]
 
     for cond in conditions:
         dcf_share_prices[cond] = {}
