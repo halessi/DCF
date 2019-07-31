@@ -1,8 +1,8 @@
-# DCF: Discounted Cash Flows
+# DCF: Discounted Cash Flows 
 
-__I'll be updating this as I continue studying valuation methodologies, and intend to do a comparison of comps/DCF valuations :moneybag: next (to highlight the differences between relative/absolute methodologies).__ If you notice any errors or have any questions/suggestions, please reach out! ***hughalessi@gmail.com*** 
+__I'll be updating this as I continue studying valuation methodologies, and intend to do a comparison of comps/DCF valuations next (to highlight the differences between relative/absolute methodologies).__ If you notice any errors or have any questions/suggestions, please reach out! ***hughalessi@gmail.com*** 
 
-I've worked to create this as part of an effort to familiarize myself with calculating discounted cash flows.  :chart_with_upwards_trend: :chart_with_downwards_trend:
+I've worked to create this Python library as part of an effort to familiarize myself with calculating discounted cash flows  working directly with a company's financial statements.  :chart_with_upwards_trend: :chart_with_downwards_trend:
 
 I have found tweaking each of the configurable variables (CapEx growth, Revenue growth, discount rate, etc) to help with developing an insight into how the assumptions made when doing discounted cash flows play a role on the end valuation. This insight is essential to utilizing DCF effectively.
 
@@ -10,8 +10,10 @@ This library also enables comparisons to where the underlying entity has traded 
 
 **Obviously one cannot utilize this visualization to say very much about the quality of their DCF and assumptions made.** It is much more helpful when one is very __certain of the valuation they've derived__ and is hoping to understand how the stock has traded in relation to that in the past, i.e. at a premium or discount.
 
-Next steps: implement dynamic discount rate calculation, multivariable earnings growth rate calculations, EBITDA multiples for terminal value
-:part_alternation_mark:
+Next steps: :part_alternation_mark:
+- [ ] implement dynamic discount rate calculation
+- [ ] multivariable earnings growth rate calculations (as opposed to hard-coding)
+- [ ] EBITDA multiples for terminal value
 
 ### Dependencies
 
@@ -59,7 +61,7 @@ This pulls the financials for AAPL for each quarter 3 years (--y) back to calcul
 Terminal outputs some details just for us to keep an eye on:
 
 ```
-Forecasting flows for 5 years out, starting with at date 2018-12-29. 
+Forecasting flows for 5 years out, starting at 2018-12-29. 
          DFCF   |    EBIT   |    D&A    |    CWC    |   CAP_EX   | 
 2019   2.35E+10 |  2.79E+10 |  3.96E+09 |  2.17E+09 |  -3.51E+09 | 
 2020   2.80E+10 |  3.70E+10 |  5.26E+09 |  1.52E+09 |  -3.82E+09 | 
@@ -75,7 +77,7 @@ This provides a quick way to dive a bit deeper into what happened without necess
 
 ![Optional Text](../master/imgs/AAPL_eg.png)
 
-Evident here is the increase in per share value of AAPL with the increase in forecasted earnings growth. On the quarterly basis we see a large degree of seasonal variation, indicating that perhaps this particular DCF would benefit from a more specific forecasting of cash flows. 
+***Although far from a presentation-ready chart***, evident here is the increase in per share value of AAPL with the increase in forecasted earnings growth. On the quarterly basis we see a large degree of seasonal variation, indicating that perhaps this particular DCF would benefit from a more specific forecasting of cash flows. 
 
 ### References
 
