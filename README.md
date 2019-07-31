@@ -77,7 +77,7 @@ This provides a quick way to dive a bit deeper into what happened without necess
 
 ![Optional Text](../master/imgs/AAPL_eg.png)
 
-***Although far from a presentation-ready chart***, evident here is the increase in per share value of AAPL with the increase in forecasted earnings growth. On the quarterly basis we see a large degree of seasonal variation, indicating that perhaps this particular DCF would benefit from a more specific forecasting of cash flows. 
+***Although far from a presentation-ready chart***, evident here is an increase in DCF-forecasted per share value of AAPL that results from our specified increase in forecasted earnings growth (i.e. the variable we're examining). On the quarterly basis we see a large degree of seasonal variation, indicating that perhaps this particular DCF would benefit from a more specific forecasting of cash flows. 
 
 ### References
 
