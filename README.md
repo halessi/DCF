@@ -73,7 +73,7 @@ Enterprise Value for AAPL: $1.41E+12.
 Equity Value for AAPL: $1.34E+12. 
 Per share value for AAPL: $2.81E+02.
 ```
-This provides a quick way to dive a bit deeper into what happened without necessarily needing to pull apart the code. 
+This provides a quick way to dive a bit deeper into what happened in the underlying calculations without necessarily needing to pull apart the code. 
 
 ![Optional Text](../master/imgs/AAPL_eg.png)
 
