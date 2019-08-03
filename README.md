@@ -21,7 +21,7 @@ Next steps: :part_alternation_mark:
 
 ### Basic usage
 
-As of now, command line arguments are used to parse parameters. See main.py for defaults. Here is a description of the parameters: (as of now)
+As of now, command line arguments are used to parse parameters. See main.py for default values. Here is a description of the parameters: (as of now)
 
 ```
 python main.py \
