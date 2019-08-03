@@ -28,7 +28,7 @@ def main(args):
 
     if args.s > 0:
         if args.v is not None:
-            # we an probably make this cleaner...but for now
+            # we dan probably make this cleaner...but for now
             if args.v == 'eg' or 'earnings_growth_rate':
                 cond, dcfs = run_setup(args, variable = 'eg')
             elif args.v == 'cg' or 'cap_ex_growth_rate':
@@ -43,7 +43,7 @@ def main(args):
         cond, dcfs = {'Ticker': [args.t]}, {}
         dcfs[args.t] = historical_DCF(args.t, args.y, args.p, args.d, args.eg, args.cg, args.pg, args.i)
 
-    if args.y > 1: # can't graph single timepoint very well lol
+    if args.y > 1: # can't graph single timepoint very well....
         visualize_bulk_historicals(dcfs, args.t, cond)
     else:
         prettyprint(dcfs, args.y)

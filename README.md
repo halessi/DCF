@@ -21,7 +21,7 @@ Next steps: :part_alternation_mark:
 
 ### Basic usage
 
-As of now, command line arguments are used to parse parameters. See main.py for defaults. Here is a description of the parameters: (as of now)
+As of now, command line arguments are used to parse parameters. See main.py for default values. Here is a description of the parameters: (as of now)
 
 ```
 python main.py \
@@ -73,11 +73,11 @@ Enterprise Value for AAPL: $1.41E+12.
 Equity Value for AAPL: $1.34E+12. 
 Per share value for AAPL: $2.81E+02.
 ```
-This provides a quick way to dive a bit deeper into what happened without necessarily needing to pull apart the code. 
+This provides a quick way to dive a bit deeper into what happened in the underlying calculations without necessarily needing to pull apart the code. 
 
 ![Optional Text](../master/imgs/AAPL_eg.png)
 
-***Although far from a presentation-ready chart***, evident here is the increase in per share value of AAPL with the increase in forecasted earnings growth. On the quarterly basis we see a large degree of seasonal variation, indicating that perhaps this particular DCF would benefit from a more specific forecasting of cash flows. 
+***Although far from a presentation-ready chart***, evident here is an increase in DCF-forecasted per share value of AAPL that results from our specified increase in forecasted earnings growth (i.e. the variable we're examining). On the quarterly basis we see a large degree of seasonal variation, indicating that perhaps this particular DCF would benefit from a more specific forecasting of cash flows. 
 
 ### References
 

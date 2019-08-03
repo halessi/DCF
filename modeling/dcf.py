@@ -155,7 +155,7 @@ def enterprise_value(income_statement, cashflow_statement, balance_statement, pe
     flows = []
 
     # Now let's iterate through years to calculate FCF, starting with most recent year
-    print('Forecasting flows for {} years out, starting with at date {}.'.format(period, income_statement[0]['date']),
+    print('Forecasting flows for {} years out, starting at {}.'.format(period, income_statement[0]['date']),
          ('\n         DFCF   |    EBIT   |    D&A    |    CWC     |   CAP_EX   | '))
     for yr in range(1, period+1):    
 
