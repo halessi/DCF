@@ -28,7 +28,6 @@ def main(args):
 
     if args.s > 0:
         if args.v is not None:
-            # we dan probably make this cleaner...but for now
             if args.v == 'eg' or 'earnings_growth_rate':
                 cond, dcfs = run_setup(args, variable = 'eg')
             elif args.v == 'cg' or 'cap_ex_growth_rate':
@@ -37,7 +36,9 @@ def main(args):
                 cond, dcfs = run_setup(args, variable = 'pg')
             elif args.v == 'discount_rate' or 'discount':
                 cond, dcfs = run_setup(args, variable = 'discount')
+            # TODO: more dynamically  do this...potentially? 
         else:
+            # should  we just default to something?
             raise ValueError('If step (-- s) is > 0, you must specify the variable via --v. What was passed is invalid.')
     else:
         cond, dcfs = {'Ticker': [args.t]}, {}
