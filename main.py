@@ -37,6 +37,8 @@ def main(args):
             elif args.v == 'discount_rate' or 'discount':
                 cond, dcfs = run_setup(args, variable = 'discount')
             # TODO: more dynamically  do this...potentially? 
+            else:
+                raise ValueError('args.variable is invalid, must choose (as of now) from this list -> [earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate, discount')
         else:
             # should  we just default to something?
             raise ValueError('If step (-- s) is > 0, you must specify the variable via --v. What was passed is invalid.')
