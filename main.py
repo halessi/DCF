@@ -71,7 +71,7 @@ def multiple_tickers():
     a list of tickers TODO: fully fix
     '''
 
-        # if args.ts is not None:
+    # if args.ts is not None:
     #     '''list to forecast'''
     #     if args.y > 1:
     #         for ticker in args.ts:
