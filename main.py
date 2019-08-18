@@ -55,6 +55,7 @@ def run_setup(args, variable):
     dcfs, cond = {}, {args.v: []}
     
     for increment in range(1, int(args.steps) + 1): # default to 5 steps?
+        # this should probably be wrapped in another function..
         var = vars(args)[variable] * (1 + (args.s * increment))
         step = '{}: {}'.format(args.v, str(var)[0:4])
 
