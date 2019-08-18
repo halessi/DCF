@@ -70,7 +70,6 @@ def multiple_tickers():
     can be called from main to spawn dcf/historical dcfs for 
     a list of tickers TODO: fully fix
     '''
-
     # if args.ts is not None:
     #     '''list to forecast'''
     #     if args.y > 1:
