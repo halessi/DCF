@@ -179,7 +179,7 @@ def enterprise_value(income_statement, cashflow_statement, balance_statement, pe
 
     NPV_FCF = sum(flows)
     
-    # now calculate terminal value
+    # now calculate terminal value using perpetual growth rate
     final_cashflow = flows[-1] * (1 + perpetual_growth_rate)
     TV = final_cashflow/(discount - perpetual_growth_rate)
     NPV_TV = TV/(1+discount)**(1+period)
