@@ -6,7 +6,7 @@ I've worked to create this Python library as part of an effort to familiarize my
 
 I have found tweaking each of the configurable variables (CapEx growth, Revenue growth, discount rate, etc) to help with developing an insight into how the assumptions made when doing discounted cash flows play a role on the end valuation. This insight is essential to utilizing DCF effectively.
 
-This library also enables comparisons to where the underlying entity has traded over the historical DCFs calculated, enabling an immediate illustration of where the stock has traded in relation to its intrinsic value.
+This library also makes possible comparisons to where the underlying entity has traded over the historical DCFs calculated, enabling an immediate illustration of where the stock has traded in relation to its intrinsic value.
 
 **Obviously one cannot utilize this visualization to say very much about the quality of their DCF and assumptions made.** It is much more helpful when one is very __certain of the valuation they've derived__ and is hoping to understand how the stock has traded in relation to that in the past, i.e. at a premium or discount.
 
