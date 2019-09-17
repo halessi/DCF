@@ -8,7 +8,7 @@ I have found tweaking each of the configurable variables (CapEx growth, Revenue 
 
 This library also makes possible comparisons to where the underlying entity has traded over the historical DCFs calculated, enabling an immediate illustration of where the stock has traded in relation to its intrinsic value.
 
-**Obviously one cannot utilize this visualization to say very much about the quality of their DCF and assumptions made.** It is much more helpful when one is very __certain of the valuation they've derived__ and is hoping to understand how the stock has traded in relation to that in the past, i.e. at a premium or discount.
+**Obviously one cannot utilize this visualization to say very much about the quality of their DCF and assumptions made.** It is much more helpful when one is very __certain of the valuation they've derived__ and is hoping to understand how the stock has traded in relation to that in the past, i.e., at a premium or discount.
 
 Next steps: 
 - [ ] implement dynamic discount rate calculation
