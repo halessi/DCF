@@ -10,7 +10,7 @@ This library also makes possible comparisons to where the underlying entity has 
 
 **Obviously one cannot utilize this visualization to say very much about the quality of their DCF and assumptions made.** It is much more helpful when one is very __certain of the valuation they've derived__ and is hoping to understand how the stock has traded in relation to that in the past, i.e. at a premium or discount.
 
-Next steps: :part_alternation_mark:
+Next steps: 
 - [ ] implement dynamic discount rate calculation
 - [ ] multivariable earnings growth rate calculations (as opposed to hard-coding)
 - [ ] EBITDA multiples for terminal value
