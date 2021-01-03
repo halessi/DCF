@@ -34,7 +34,11 @@ def get_jsonparsed_data(url):
     """
     response = urlopen(url)
     data = response.read().decode('utf-8')
-    return json.loads(data)
+    json_data = json.loads(data)
+    if "Error Message" in json_data:
+        raise ValueError("Error while requesting data from '{url}'. Error Message: '{err_msg}'.".format(
+            url=url, err_msg=json_data["Error Message"]))
+    return json_data
 
 
 def get_EV_statement(ticker, period='annual'):
