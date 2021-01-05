@@ -1,7 +1,7 @@
-'''
+"""
 Quick visualization toolkit. I'd like to build this out to be decently powerful
 in terms of enabling quick interpretation of DCF related data.
-'''
+"""
 
 import sys
 
@@ -16,7 +16,7 @@ sns.set_context('paper')
 
 
 def visualize(dcf_prices, current_share_prices, regress = True):
-    '''
+    """
     2d plot comparing dcf-forecasted per share price with
     where a list of stocks is currently trading
 
@@ -27,12 +27,13 @@ def visualize(dcf_prices, current_share_prices, regress = True):
 
     returns:
         nada
-    '''
+    """
     # TODO: implement
     return NotImplementedError
 
+
 def visualize_bulk_historicals(dcfs, ticker, condition):
-    '''
+    """
     multiple 2d plot comparing historical DCFS of different growth
     assumption conditions
 
@@ -40,7 +41,7 @@ def visualize_bulk_historicals(dcfs, ticker, condition):
         dcfs: list of dcfs of format {'value1', {'year1': dcf}, ...}
         condition: dict of format {'condition': [value1, value2, value3]}
 
-    '''
+    """
     dcf_share_prices = {}
     variable = list(condition.keys())[0]
     
@@ -76,10 +77,11 @@ def visualize_bulk_historicals(dcfs, ticker, condition):
     plt.savefig('imgs/{}_{}.png'.format(ticker, list(condition.keys())[0]))
     plt.show()
 
+
 def visualize_historicals(dcfs):
-    '''
+    """
     2d plot comparing dcf history to share price history
-    '''
+    """
     pass
 
     dcf_share_prices = {}

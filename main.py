@@ -1,4 +1,4 @@
-'''
+"""
 author: Hugh Alessi
 date: Saturday, July 27, 2019  8:25:00 PM
 description: Use primitive underlying DCF modeling to compare intrinsic per share price
@@ -9,7 +9,7 @@ future goals:
     -- More robust revenue forecasts in FCF. 
     -- EBITA multiples terminal value calculation.
     -- More to be added.
-'''
+"""
 
 
 import argparse
@@ -21,10 +21,10 @@ from visualization.printouts import *
 
 
 def main(args):
-    '''
+    """
     although the if statements are less than desirable, it allows rapid exploration of 
     historical or present DCF values for either a single or list of tickers.
-    '''
+    """
 
     if args.s > 0:
         if args.v is not None:
@@ -51,6 +51,7 @@ def main(args):
     else:
         prettyprint(dcfs, args.y)
 
+
 def run_setup(args, variable):
     dcfs, cond = {}, {args.v: []}
     
@@ -65,13 +66,14 @@ def run_setup(args, variable):
 
     return cond, dcfs
 
+
 def multiple_tickers():
-    '''
+    """
     can be called from main to spawn dcf/historical dcfs for 
     a list of tickers TODO: fully fix
-    '''
+    """
     # if args.ts is not None:
-    #     '''list to forecast'''
+    #     """list to forecast"""
     #     if args.y > 1:
     #         for ticker in args.ts:
     #             dcfs[ticker] =  historical_DCF(args.t, args.y, args.p, args.eg, args.cg, args.pgr)
@@ -79,7 +81,7 @@ def multiple_tickers():
     #         for ticker in args.tss:
     #             dcfs[ticker] = DCF(args.t, args.p, args.eg, args.cg, args.pgr)
     # elif args.t is not None:
-    #     ''' single ticker'''
+    #     """ single ticker"""
     #     if args.y > 1:
     #         dcfs[args.t] = historical_DCF(args.t, args.y, args.p, args.eg, args.cg, args.pgr)
     #     else:
@@ -87,6 +89,7 @@ def multiple_tickers():
     # else:
     #     raise ValueError('A ticker or list of tickers must be specified with --ticker or --tickers')
     return NotImplementedError
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

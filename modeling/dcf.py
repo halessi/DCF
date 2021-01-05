@@ -3,8 +3,9 @@ from decimal import Decimal
 
 from modeling.data import *
 
+
 def DCF(ticker, ev_statement, income_statement, balance_statement, cashflow_statement, discount_rate, forecast, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate):
-    '''
+    """
     a very basic 2-stage DCF implemented for learning purposes.
     see enterprise_value() for details on arguments. 
 
@@ -15,7 +16,7 @@ def DCF(ticker, ev_statement, income_statement, balance_statement, cashflow_stat
         dict: {'share price': __, 'enterprise_value': __, 'equity_value': __, 'date': __}
         CURRENT DCF VALUATION. See historical_dcf to fetch a history. 
 
-    '''
+    """
     enterprise_val = enterprise_value(income_statement,
                                         cashflow_statement,
                                         balance_statement,
@@ -40,8 +41,9 @@ def DCF(ticker, ev_statement, income_statement, balance_statement, cashflow_stat
         'share_price': share_price
     }
 
+
 def historical_DCF(ticker, years, forecast, discount_rate, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate, interval = 'annual'):
-    '''
+    """
     Wrap DCF to fetch DCF values over a historical timeframe, denoted period. 
 
     args:
@@ -50,7 +52,7 @@ def historical_DCF(ticker, years, forecast, discount_rate, earnings_growth_rate,
 
     returns:
         {'date': dcf, ..., 'date', dcf}
-    '''
+    """
     dcfs = {}
 
     income_statement = get_income_statement(ticker = ticker, period = interval)['financials'] 
@@ -81,8 +83,9 @@ def historical_DCF(ticker, years, forecast, discount_rate, earnings_growth_rate,
     
     return dcfs
 
+
 def ulFCF(ebit, tax_rate, non_cash_charges, cwc, cap_ex):
-    '''
+    """
     Formula to derive unlevered free cash flow to firm. Used in forecasting.
 
     args:
@@ -94,11 +97,12 @@ def ulFCF(ebit, tax_rate, non_cash_charges, cwc, cap_ex):
 
     returns:
         unlevered free cash flow
-    '''
+    """
     return ebit * (1-tax_rate) + non_cash_charges + cwc + cap_ex
 
+
 def get_discount_rate():
-    '''
+    """
     Calculate the Weighted Average Cost of Capital (WACC) for our company.
     Used for consideration of existing capital structure.
 
@@ -106,11 +110,12 @@ def get_discount_rate():
     
     returns:
         W.A.C.C.
-    '''
+    """
     return .1 # TODO: implement 
 
+
 def equity_value(enterprise_value, enterprise_value_statement):
-    '''
+    """
     Given an enterprise value, return the equity value by adjusting for cash/cash equivs. and total debt.
 
     args:
@@ -120,15 +125,16 @@ def equity_value(enterprise_value, enterprise_value_statement):
     returns:
         equity_value: (enterprise value - debt + cash)
         share_price: equity value/shares outstanding
-    '''
+    """
     equity_val = enterprise_value - enterprise_value_statement['+ Total Debt'] 
     equity_val += enterprise_value_statement['- Cash & Cash Equivalents']
     share_price = equity_val/float(enterprise_value_statement['Number of Shares'])
 
     return equity_val,  share_price
 
+
 def enterprise_value(income_statement, cashflow_statement, balance_statement, period, discount_rate, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate):
-    '''
+    """
     Calculate enterprise value by NPV of explicit _period_ free cash flows + NPV of terminal value,
     both discounted by W.A.C.C.
 
@@ -141,7 +147,7 @@ def enterprise_value(income_statement, cashflow_statement, balance_statement, pe
 
     returns:
         enterprise value
-    '''
+    """
     # XXX: statements are returned as historical list, 0 most recent
     ebit = float(income_statement[0]['EBIT'])
     tax_rate = float(income_statement[0]['Income Tax Expense']) /  \
