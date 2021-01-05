@@ -34,7 +34,8 @@ python main.py \
         --variable      
         --discount_rate 
         --earnings_growth_rate 
-        --perpetual_growth_rate 
+        --perpetual_growth_rate
+        --apikey
 ```
 
   Argument              | Usage          
@@ -49,12 +50,20 @@ variable                | the variable to increase each step, those available ar
 discount_rate           | specified discount_rate (W.A.C.C., it'd be nice (i think) if we dynamically calculated this)
 earnings_growth_rate    | specified rate of earnings growth (EBIT)
 perpetual_growth_rate   | specified rate of perpetual growth for calculating terminal value after __period__ years, EBITDA multiples coming
+apikey                  | (Free) API Key to access financial data from [financialmodelingprep](https://financialmodelingprep.com/) -- Can also be provided as `APIKEY` envrionment variable.
 
 ### Example
 
 If we want to examine historical DCFS for $AAPL, we can run:
 
-```python main.py --t AAPL --i 'quarter' --y 3 --eg .15 --steps 2 --s 0.1 --v eg ```
+```python main.py --t AAPL --i 'quarter' --y 3 --eg .15 --steps 2 --s 0.1 --v eg --apikey <secret>```
+
+or via:
+```
+export APIKEY=<secret>
+python main.py --t AAPL --i 'quarter' --y 3 --eg .15 --steps 2 --s 0.1 --v eg
+```
+
 
 This pulls the financials for AAPL for each quarter 3 years (--y) back to calculate 12 DCFs (3 years * 4 quarters), starting at a base earnings growth of 15% (--eg) and increasing for two steps (--steps) by 10% (--s), with --v specifying that earnings growth is the variable we want to increment. 
 

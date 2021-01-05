@@ -42,7 +42,7 @@ def DCF(ticker, ev_statement, income_statement, balance_statement, cashflow_stat
     }
 
 
-def historical_DCF(ticker, years, forecast, discount_rate, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate, interval = 'annual'):
+def historical_DCF(ticker, years, forecast, discount_rate, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate, interval = 'annual', apikey = ''):
     """
     Wrap DCF to fetch DCF values over a historical timeframe, denoted period. 
 
@@ -55,10 +55,10 @@ def historical_DCF(ticker, years, forecast, discount_rate, earnings_growth_rate,
     """
     dcfs = {}
 
-    income_statement = get_income_statement(ticker = ticker, period = interval)['financials'] 
-    balance_statement = get_balance_statement(ticker = ticker, period = interval)['financials']
-    cashflow_statement = get_cashflow_statement(ticker = ticker, period = interval)['financials']
-    enterprise_value_statement = get_EV_statement(ticker = ticker, period = interval)['enterpriseValues']
+    income_statement = get_income_statement(ticker = ticker, period = interval, apikey = apikey)['financials']
+    balance_statement = get_balance_statement(ticker = ticker, period = interval, apikey = apikey)['financials']
+    cashflow_statement = get_cashflow_statement(ticker = ticker, period = interval, apikey = apikey)['financials']
+    enterprise_value_statement = get_EV_statement(ticker = ticker, period = interval, apikey = apikey)['enterpriseValues']
 
     if interval == 'quarter':
         intervals = years * 4

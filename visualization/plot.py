@@ -32,7 +32,7 @@ def visualize(dcf_prices, current_share_prices, regress = True):
     return NotImplementedError
 
 
-def visualize_bulk_historicals(dcfs, ticker, condition):
+def visualize_bulk_historicals(dcfs, ticker, condition, apikey):
     """
     multiple 2d plot comparing historical DCFS of different growth
     assumption conditions
@@ -65,8 +65,10 @@ def visualize_bulk_historicals(dcfs, ticker, condition):
     # sorry for anybody reading this, bit too pythonic
     # the second argument here just fetches the list of dates we're using as x values
     # in the above plt.plot() call without knowing the conditions we index with abo
-    historical_stock_prices = get_historical_share_prices(ticker, 
-                                                          list(dcf_share_prices[list(dcf_share_prices.keys())[0]].keys())[::-1])
+    historical_stock_prices = get_historical_share_prices(
+        ticker=ticker,
+        dates=list(dcf_share_prices[list(dcf_share_prices.keys())[0]].keys())[::-1],
+        apikey=apikey)
     plt.plot(list(historical_stock_prices.keys()),
              list(historical_stock_prices.values()), label = '${} over time'.format(ticker))
 

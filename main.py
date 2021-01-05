@@ -13,6 +13,7 @@ future goals:
 
 
 import argparse
+import os
 
 from modeling.data import *
 from modeling.dcf import *
@@ -44,10 +45,10 @@ def main(args):
             raise ValueError('If step (-- s) is > 0, you must specify the variable via --v. What was passed is invalid.')
     else:
         cond, dcfs = {'Ticker': [args.t]}, {}
-        dcfs[args.t] = historical_DCF(args.t, args.y, args.p, args.d, args.eg, args.cg, args.pg, args.i)
+        dcfs[args.t] = historical_DCF(args.t, args.y, args.p, args.d, args.eg, args.cg, args.pg, args.i, args.apikey)
 
     if args.y > 1: # can't graph single timepoint very well....
-        visualize_bulk_historicals(dcfs, args.t, cond)
+        visualize_bulk_historicals(dcfs, args.t, cond, args.apikey)
     else:
         prettyprint(dcfs, args.y)
 
@@ -62,7 +63,7 @@ def run_setup(args, variable):
 
         cond[args.v].append(step)
         vars(args)[variable] = var
-        dcfs[step] = historical_DCF(args.t, args.y, args.p, args.d, args.eg, args.cg, args.pg, args.i)
+        dcfs[step] = historical_DCF(args.t, args.y, args.p, args.d, args.eg, args.cg, args.pg, args.i, args.apikey)
 
     return cond, dcfs
 
@@ -105,6 +106,7 @@ if __name__ == '__main__':
     parser.add_argument('--eg', '--earnings_growth_rate', help = 'growth in revenue, YoY',  type = float, default = .05)
     parser.add_argument('--cg', '--cap_ex_growth_rate', help = 'growth in cap_ex, YoY', type = float, default = 0.045)
     parser.add_argument('--pg', '--perpetual_growth_rate', help = 'for perpetuity growth terminal value', type = float, default = 0.05)
+    parser.add_argument('--apikey', help='API key for financialmodelingprep.com', default=os.environ.get('APIKEY'))
 
     args = parser.parse_args()
     main(args)
