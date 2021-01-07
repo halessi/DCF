@@ -1,4 +1,4 @@
-'''
+"""
 author: Hugh Alessi
 date: Saturday, July 27, 2019  8:25:00 PM
 description: Use primitive underlying DCF modeling to compare intrinsic per share price
@@ -9,10 +9,11 @@ future goals:
     -- More robust revenue forecasts in FCF. 
     -- EBITA multiples terminal value calculation.
     -- More to be added.
-'''
+"""
 
 
 import argparse
+import os
 
 from modeling.data import *
 from modeling.dcf import *
@@ -21,10 +22,10 @@ from visualization.printouts import *
 
 
 def main(args):
-    '''
+    """
     although the if statements are less than desirable, it allows rapid exploration of 
     historical or present DCF values for either a single or list of tickers.
-    '''
+    """
 
     if args.s > 0:
         if args.v is not None:
@@ -44,12 +45,13 @@ def main(args):
             raise ValueError('If step (-- s) is > 0, you must specify the variable via --v. What was passed is invalid.')
     else:
         cond, dcfs = {'Ticker': [args.t]}, {}
-        dcfs[args.t] = historical_DCF(args.t, args.y, args.p, args.d, args.eg, args.cg, args.pg, args.i)
+        dcfs[args.t] = historical_DCF(args.t, args.y, args.p, args.d, args.eg, args.cg, args.pg, args.i, args.apikey)
 
     if args.y > 1: # can't graph single timepoint very well....
-        visualize_bulk_historicals(dcfs, args.t, cond)
+        visualize_bulk_historicals(dcfs, args.t, cond, args.apikey)
     else:
         prettyprint(dcfs, args.y)
+
 
 def run_setup(args, variable):
     dcfs, cond = {}, {args.v: []}
@@ -61,17 +63,18 @@ def run_setup(args, variable):
 
         cond[args.v].append(step)
         vars(args)[variable] = var
-        dcfs[step] = historical_DCF(args.t, args.y, args.p, args.d, args.eg, args.cg, args.pg, args.i)
+        dcfs[step] = historical_DCF(args.t, args.y, args.p, args.d, args.eg, args.cg, args.pg, args.i, args.apikey)
 
     return cond, dcfs
 
+
 def multiple_tickers():
-    '''
+    """
     can be called from main to spawn dcf/historical dcfs for 
     a list of tickers TODO: fully fix
-    '''
+    """
     # if args.ts is not None:
-    #     '''list to forecast'''
+    #     """list to forecast"""
     #     if args.y > 1:
     #         for ticker in args.ts:
     #             dcfs[ticker] =  historical_DCF(args.t, args.y, args.p, args.eg, args.cg, args.pgr)
@@ -79,7 +82,7 @@ def multiple_tickers():
     #         for ticker in args.tss:
     #             dcfs[ticker] = DCF(args.t, args.p, args.eg, args.cg, args.pgr)
     # elif args.t is not None:
-    #     ''' single ticker'''
+    #     """ single ticker"""
     #     if args.y > 1:
     #         dcfs[args.t] = historical_DCF(args.t, args.y, args.p, args.eg, args.cg, args.pgr)
     #     else:
@@ -87,6 +90,7 @@ def multiple_tickers():
     # else:
     #     raise ValueError('A ticker or list of tickers must be specified with --ticker or --tickers')
     return NotImplementedError
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -102,6 +106,7 @@ if __name__ == '__main__':
     parser.add_argument('--eg', '--earnings_growth_rate', help = 'growth in revenue, YoY',  type = float, default = .05)
     parser.add_argument('--cg', '--cap_ex_growth_rate', help = 'growth in cap_ex, YoY', type = float, default = 0.045)
     parser.add_argument('--pg', '--perpetual_growth_rate', help = 'for perpetuity growth terminal value', type = float, default = 0.05)
+    parser.add_argument('--apikey', help='API key for financialmodelingprep.com', default=os.environ.get('APIKEY'))
 
     args = parser.parse_args()
     main(args)
