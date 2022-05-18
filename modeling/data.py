@@ -6,7 +6,7 @@ NOTE: Some code taken directly from their documentation. See: https://financialm
 """
 
 from urllib.request import urlopen
-import json
+import json, traceback
 
 
 def get_api_url(requested_data, ticker, period, apikey):
@@ -31,7 +31,12 @@ def get_jsonparsed_data(url):
     returns:
         parsed json
     """
-    response = urlopen(url)
+    try: response = urlopen(url)
+    except Exception as e:
+        print(f"Error retrieving {url}:")
+        try: print("\t%s"%e.read().decode())
+        except: pass
+        raise
     data = response.read().decode('utf-8')
     json_data = json.loads(data)
     if "Error Message" in json_data:
@@ -144,7 +149,11 @@ def get_historical_share_prices(ticker, dates, apikey=''):
     """
     prices = {}
     for date in dates:
-        date_start, date_end = date[0:8] + str(int(date[8:]) - 2), date
+        try: date_start, date_end = date[0:8] + str(int(date[8:]) - 2), date
+        except:
+            print(f"Error parsing '{date}' to date.")
+            print(traceback.format_exc())
+            continue
         url = 'https://financialmodelingprep.com/api/v3/historical-price-full/{ticker}?from={date_start}&to={date_end}&apikey={apikey}'.format(
             ticker=ticker, date_start=date_start, date_end=date_end, apikey=apikey)
         try:

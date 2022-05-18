@@ -1,4 +1,4 @@
-import argparse
+import argparse, traceback
 from decimal import Decimal
 
 from modeling.data import *
@@ -32,7 +32,7 @@ def DCF(ticker, ev_statement, income_statement, balance_statement, cashflow_stat
     print('\nEnterprise Value for {}: ${}.'.format(ticker, '%.2E' % Decimal(str(enterprise_val))), 
               '\nEquity Value for {}: ${}.'.format(ticker, '%.2E' % Decimal(str(equity_val))),
            '\nPer share value for {}: ${}.\n'.format(ticker, '%.2E' % Decimal(str(share_price))),
-            '-'*60)
+            )
 
     return {
         'date': income_statement[0]['date'],       # statement date used
@@ -77,9 +77,11 @@ def historical_DCF(ticker, years, forecast, discount_rate, earnings_growth_rate,
                     earnings_growth_rate,  
                     cap_ex_growth_rate, 
                     perpetual_growth_rate)
-        except IndexError:
+        except (Exception, IndexError) as e:
+            print(traceback.format_exc())
             print('Interval {} unavailable, no historical statement.'.format(interval)) # catch
-        dcfs[dcf['date']] = dcf 
+        else: dcfs[dcf['date']] = dcf 
+        print('-'*60)
     
     return dcfs
 
@@ -149,7 +151,10 @@ def enterprise_value(income_statement, cashflow_statement, balance_statement, pe
         enterprise value
     """
     # XXX: statements are returned as historical list, 0 most recent
-    ebit = float(income_statement[0]['EBIT'])
+    if income_statement[0]['EBIT']:
+        ebit = float(income_statement[0]['EBIT'])
+    else:
+        ebit = float(input(f"EBIT missing. Enter EBIT on {income_statement[0]['date']} or skip: "))
     tax_rate = float(income_statement[0]['Income Tax Expense']) /  \
                float(income_statement[0]['Earnings before Tax'])
     non_cash_charges = float(cashflow_statement[0]['Depreciation & Amortization'])
