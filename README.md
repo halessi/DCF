@@ -21,7 +21,7 @@ Next steps:
 
 ### API Key
 
-This project requires an API key from financialmodelingprep. You can get one [here](https://intelligence.financialmodelingprep.com/pricing-plans?couponCode=halessi). Note, this is an affiliate link. If you choose to sign-up for a non-free version due to needing more requests, you will get a ***discount*** if you use my link! And, it helps to compensate me for my time on this project. Thank you. 
+This project requires an API key from financialmodelingprep. You can get one for FREE [here](https://intelligence.financialmodelingprep.com/pricing-plans?couponCode=halessi). Note, this is an affiliate link. If you choose to sign-up for a non-free version due to needing more requests, you will get a ***discount*** if you use my link! And, it helps to compensate me for my time on this project. Thank you. 
 
 ### Basic usage
 
