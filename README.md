@@ -19,6 +19,10 @@ Next steps:
 
 ```pip install matplotlib urllib3 seaborn```
 
+### API Key
+
+This project requires an API key from financialmodelingprep. You can get one [here]([https://intelligence.financialmodelingprep.com/pricing-plans?couponCode=halessi]). Note, this is an affiliate link. If you choose to sign-up for a non-free version due to needing more requests, you will get a *discount* if you use my link! And, it helps to compensate me for my time on this project. Thank you. 
+
 ### Basic usage
 
 As of now, command line arguments are used to parse parameters. See main.py for default values. Here is a description of the parameters: (as of now)
@@ -50,7 +54,7 @@ variable                | the variable to increase each step, those available ar
 discount_rate           | specified discount_rate (W.A.C.C., it'd be nice (i think) if we dynamically calculated this)
 earnings_growth_rate    | specified rate of earnings growth (EBIT)
 perpetual_growth_rate   | specified rate of perpetual growth for calculating terminal value after __period__ years, EBITDA multiples coming
-apikey                  | (Free) API Key to access financial data from [financialmodelingprep](https://financialmodelingprep.com/) -- Can also be provided as `APIKEY` envrionment variable.
+apikey                  | (Free) API Key to access financial data from [financialmodelingprep]([https://financialmodelingprep.com/](https://intelligence.financialmodelingprep.com/pricing-plans?couponCode=halessi)) -- Can also be provided as `APIKEY` envrionment variable.
 
 ### Example
 
